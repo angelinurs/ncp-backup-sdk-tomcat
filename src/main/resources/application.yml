@@ -1,0 +1,122 @@
+application:
+  etc:
+    DIR_PATH: /home/naru/temp/temp
+#    LOG_PATH: ${COMPANY}/${APP_PROP}
+    LOG_PATH: /backend-sys/backup-scheduler
+#    key: naru
+  object-storage:
+    CHARSET_NAME : ENC(TxM4cKo0XdGuPkHcCh8t3kIurl7aWVMDyXKfhf/grX0yQF4NcuFzQ0U4XcixBiKg)
+    HMAC_ALGORITHM : ENC(17c7b9uUCFU6oxFtuZtLeNAJbmH/3hhlD4PwvqQUZ4IP7PxF5UXUUkdF+qLPnntS)
+    HASH_ALGORITHM : ENC(9puZzPoEL3lfwSZ2uxLj+SQoAQTxJngpTbAZgsvQVFpD7EtcAaHYnRkvey+TBmw6)
+    AWS_ALGORITHM : ENC(++3MuNGPZ5ytMMmhfCuGE2wqQYsyiq0T2+rtpMab/MGOPBAZRgvUJkPgc1be9+ZY6xoGyQCw3CzutiueBBQRYg==)
+    
+    SERVICE_NAME : ENC(jtBbYg+wKmxQ8XMQYQHOWPLbO1ur5ecFpJj2Xj39gcfqUYdNxFxr9HzD8ZDvxvlI)
+    REQUEST_TYPE : ENC(tkkv2CD2iXFgbFVn1KvGidaT5WAish33On7ugWcmSjUVdF0Da11T54O4wOAkMr0k)
+    
+    UNSIGNED_PAYLOAD : ENC(J3VncB4hkGM2SW83qxtPzaA/Gof2nX9ou+dMNWV5qV5NRIEC6lDUiVmX/WR1ND9dOiWKKMIChn30+zyOvzSUvA==)
+    # Cental Region
+    REGION_NAME : ENC(+GAsIbghi7YjihHe7o24YnHPQJI+RioeJtY2830YMTklZnj+GcMrnVSKIWO3B2od)
+    ENDPOINT : ENC(TaIU8Cn+rP67pAtO5kswJf6ySoq4YrY0pUAN2xFQD1kCLSUtIkbvxpIQIHQczp/Cals2eG6maMIfFi3OQ2oz++GlHioUi+xC5ZnJXqsnPy4=)
+    ACCESS_KEY : ENC(Qd/yhh7FXp9LBzkyP5kOoN9PDxQUSRNr4mJgR04dqucL2WhwLtsZ95z8kgbp7vDJnfp9Xkox/rcEN865tlpk4A==)
+    SECRET_KEY : ENC(VPNXoGDbLmh5K2wy9w7OS8tdLMcrQ7Lm4rVYaDR0R3OAk/wNr0UYoYl78fZrTbnTifXqYmbG6v6YNguwWKjTACr8NzZ/1ekHT588TRssdN4=)
+#   ======================================
+#    CHARSET_NAME: UTF-8
+#    HMAC_ALGORITHM: HmacSHA256
+#    HASH_ALGORITHM: SHA-256
+#    AWS_ALGORITHM: AWS4-HMAC-SHA256
+#
+#    SERVICE_NAME: s3
+#    REQUEST_TYPE: aws4_request
+#
+#    UNSIGNED_PAYLOAD: UNSIGNED-PAYLOAD
+#    REGION_NAME: gov-standard
+#    ENDPOINT: https://kr.object.gov-ncloudstorage.com
+#    ACCESS_KEY: LU2uVIWLmbQuI7ngYqnv
+#    SECRET_KEY: KjYrWWKoybZZXlycnlL8Vm9fCZ3VZqTQfnbSneYn
+
+jasypt:
+  encryptor:
+    bean: jasyptEncryptorAES
+#    password: ez-psm-saas
+
+spring:
+  application:
+#    name: ${APP_NAME}
+    name: backup-manager
+  profiles:
+    active: local
+  # datasource
+  portal:
+    datasource:
+      hikari:
+        driver-class-name: ENC(OHglsWiluub5KKeB5hNBSyiMBIZoXJTczX87yvgEWPqMO1B+ZM3rNx/j8deb0y1rYAl+FvCXOsY/ZsMBOOJOCw==)        
+        jdbc-url: ENC(WHS0aXdsvsP6hePfCbnsmirT0mqLlG5JZQUEwjROszrXoWHM7N+kLv0bBG35ZQaKHp6At2hyy22cx0qJ5YNyH0PXjB7mGiBM2HE0kIMRAg5yfW93Cx5pz6eJpLLRwLNbM+YtPhrRCnZj4IVeLtx/P2wRruSOuIZbdqetAUS3J1Y=)
+        username: ENC(DO+4bQWi0XQTcfN6HxvsH6aSzmO70ppSLoPkBUu9myizDACLZervJqQt4vsJX8ol)
+        password: ENC(PJ2Muwoi15qRbp8fEvAViEL82Vhi3VhR3+7kDGBV33gO0qwNpHGcK/htXIOWm+EX)
+        pool-name: ENC(ERtiRFiR9XcrlO/qWYjqdiYLaSuAAPgtHg78+87mkbDYnbwm56231Muj+e7QrrwnRQy90kG7CSV8sF7VzAQ9Ew==)
+        # auto-commit: false
+        # connection-test-query: SELECT 1
+        # transaction-isolation: TRANSACTION_READ_UNCOMMITTED
+        connection-timeout: 3000
+        validation-timeout: 3000
+        minimum-idle: 1
+        max-lifetime: 15000
+        maximum-pool-size: 10        
+        # multi-rows insert option
+        data-source-properties: 
+          reWriteBatchedInserts: true
+  user:
+    datasource:
+      hikari:
+        driver-class-name: ENC(OHglsWiluub5KKeB5hNBSyiMBIZoXJTczX87yvgEWPqMO1B+ZM3rNx/j8deb0y1rYAl+FvCXOsY/ZsMBOOJOCw==)        
+        jdbc-url: ENC(MtkzVRI/1qfRHJrHdyDjTSR5bcJ3NmmlY+iB/2nOF0jLoIYIhsSWguMRnf2U2qzsJ6WPHFON1zgvDbi/w5Yjtr8gY685rMF53dC9DjxbAhnVmERekWXJNtJ1Degiu5k17N6MtC9ZL64W7Zr9oqs73xyJzL4RgpO1udu9vV8sgi4=)
+        username: ENC(nUsM0nvcy4XIdKyQr+bhWaIrhDkB7W63qF8RA25LfJvK7p19MeetQk+7BDh3LRXx)
+        password: ENC(Ypbka7daZBUnRMQK8uGXO8Tq28M5I/wauwfYdTi6McJnJRzR2F80sI31oZLxrFrK)
+        pool-name: ENC(TavYQNQIpT06748B29UxIe/sncoqst+IkdQ9Cbw3ZSYW8GFTsVNjH3vDiCbS0/SLr9SkFjyMlTHamK/KPPqqow==)
+        # auto-commit: false
+        # connection-test-query: SELECT 1
+        # transaction-isolation: TRANSACTION_READ_UNCOMMITTED
+        connection-timeout: 3000
+        validation-timeout: 3000
+        minimum-idle: 1
+        max-lifetime: 15000
+        maximum-pool-size: 10
+        # multi-rows insert option
+        data-source-properties: 
+          reWriteBatchedInserts: true
+#logging:
+##  config:
+#  level:
+#    com:
+#      error
+#  file: 
+#    path: /${spring.application.name}/logs
+#    name: error.log
+---
+# local
+spring:
+  config:
+    activate:
+      on-profile: local
+      
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html 
+
+---
+# dev
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html 
+---
+# prod
+spring:
+  config:
+    activate:
+      on-profile: prod
+      

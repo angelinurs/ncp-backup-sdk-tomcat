@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+
+	<!--로그 파일 저장 위치-->
+	<!-- 
+    <property name="LOG_FILE" value="${profiles.active.log.path}"/>
+	-->
+	<!-- block to log-back init message -->
+	<statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+	
+	<include resource="org/springframework/boot/logging/logback/defaults.xml" />
+	<!-- 
+    <springProperty name="LOG_PATH" source= "spring.application.name" />
+	-->
+    <springProperty name="LOG_PATH" source= "application.etc.LOG_PATH" />
+    
+    <property name="CONSOLE_LOG_PATTERN" value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx"/>
+    <property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } --- [%15.15t] %-40.40logger{39} : %m%n%wEx"/>
+	
+	<!-- debug => debug, info, error -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    	<filter class="ch.qos.logback.classic.filter.LevelFilter">
+		<!-- 에러부분 console 안나오며, log 부분에는 찍힘 -->
+            <level>error</level>
+            <onMatch>DENY</onMatch>
+            <onMismatch>ACCEPT</onMismatch>
+        </filter>
+        <encoder>
+            <Pattern>
+				${CONSOLE_LOG_PATTERN}				
+			</Pattern>
+        </encoder>
+    </appender>
+	<!-- debug => debug, info, error -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>
+				${CONSOLE_LOG_PATTERN}				
+			</Pattern>
+        </encoder>
+    </appender>
+
+	<!-- info만, 나머지는 안보임 -->
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    	<filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>info</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>./${LOG_PATH}/logs/logs.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>./${LOG_PATH}/logs-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+		
+        <encoder>
+            <Pattern>
+				${FILE_LOG_PATTERN}				
+			</Pattern>
+        </encoder>
+    </appender>
+	
+	<!-- Error만, 나머지는 안보임 -->
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    	<filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>error</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>./${LOG_PATH}/error/error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- new log save file 생성시 경로에 지정에 따라 다음 날짜와 함께 파일 생성 -->
+            <fileNamePattern>./${LOG_PATH}/error/logs_error-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>            
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+	<!-- 메인 실행할 파일을 적용 -->
+	<!-- 
+    <logger name="org.springframework" level="info"/>
+    <logger name="com.example.datetime" level="debug">
+    	<appender-ref ref="FILE"/>
+    	<appender-ref ref="FILE_ERROR"/>
+    </logger>
+	-->
+
+ 	<!-- 
+ 	<springProfile name="local, dev">
+		<root level="info">
+			<appender-ref ref="CONSOLE"/>		
+	    	<appender-ref ref="FILE"/>
+	    	<appender-ref ref="FILE_ERROR"/>
+		</root>
+    </springProfile>
+ 	-->
+
+	<root level="info">
+		<springProfile name="local" >
+			<appender-ref ref="CONSOLE"/>
+		</springProfile>
+		<springProfile name="dev" >
+			<appender-ref ref="CONSOLE"/>		
+	    	<appender-ref ref="FILE"/>
+	    	<appender-ref ref="FILE_ERROR"/>
+		</springProfile>
+		<springProfile name="prod" >
+			<appender-ref ref="STDOUT"/>		
+	    	<appender-ref ref="FILE"/>
+	    	<appender-ref ref="FILE_ERROR"/>
+		</springProfile>
+	</root>
+	
+</configuration>
+
+<!-- 로그 logback-spring.xml -->
+<!-- 1. 파일 생성후 해당 코드 복사 -->
+<!-- 2. logs 쌓이는 방식 /./${LOG_PATH}/logs/logs.log -->
+<!-- 3. 해당 파일에 관한 log.error("Error test"); 의도적 에러 부분 -->
+<!-- 4. logs_error 파일 안에 에러 부분 확인 가능 -->
