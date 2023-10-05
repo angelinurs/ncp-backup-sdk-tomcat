@@ -1,9 +1,4 @@
 application:
-  etc:
-    DIR_PATH: /home/naru/temp/temp
-#    LOG_PATH: ${COMPANY}/${APP_PROP}
-    LOG_PATH: /backend-sys/backup-scheduler
-#    key: naru
   object-storage:
     CHARSET_NAME : ENC(TxM4cKo0XdGuPkHcCh8t3kIurl7aWVMDyXKfhf/grX0yQF4NcuFzQ0U4XcixBiKg)
     HMAC_ALGORITHM : ENC(17c7b9uUCFU6oxFtuZtLeNAJbmH/3hhlD4PwvqQUZ4IP7PxF5UXUUkdF+qLPnntS)
@@ -44,7 +39,7 @@ spring:
 #    name: ${APP_NAME}
     name: backup-manager
   profiles:
-    active: local
+    active: dev
   # datasource
   portal:
     datasource:
@@ -101,7 +96,13 @@ spring:
       
 springdoc:
   swagger-ui:
-    path: /swagger-ui.html 
+    path: /swagger-ui.html
+
+application:
+  etc:
+    DIR_PATH: /home/naru/temp/temp
+    LOG_PATH: /backend-sys/backup-scheduler
+#    key: naru
 
 ---
 # dev
@@ -113,10 +114,25 @@ spring:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html 
+
+application:
+  etc:
+#    DIR_PATH: /home/naru/temp/temp
+    DIR_PATH: /app
+#    LOG_PATH: ${COMPANY}/${APP_PROP}
+#    LOG_PATH: /app/logs/${APP_PROP}
+    LOG_PATH: /app/logs/${COMPANY}/${APP_NAME}
 ---
 # prod
 spring:
   config:
     activate:
       on-profile: prod
+
+application:
+  etc:
+#    DIR_PATH: /home/naru/temp/temp
+    DIR_PATH: /app
+#    LOG_PATH: ${COMPANY}/${APP_PROP}
+    LOG_PATH: /app/logs/${COMPANY}/${APP_NAME}
       
