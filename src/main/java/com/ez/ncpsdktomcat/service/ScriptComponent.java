@@ -39,10 +39,12 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @Setter
 @Component
-public class PsqlClientComponent implements EnvironmentAware {
+public class ScriptComponent implements EnvironmentAware {
 	
 	// etc
 	private String dirPath;
+	private String schemaScript;
+	private String logScript;
 
 	// user properties
 	private String userUrl;	
@@ -63,12 +65,12 @@ public class PsqlClientComponent implements EnvironmentAware {
 	private String shellScriptPath;
 		
 		@Override
-		public void setEnvironment(Environment environment) {
-			
-//			this.shellScriptPath = environment.getProperty("app.shell.script.summary.path");			
+		public void setEnvironment(Environment environment) {			
 			
 			// set user properties
 			this.dirPath = environment.getProperty("application.etc.DIR_PATH");
+			this.schemaScript = environment.getProperty("application.etc.SCHEMA_SCRIPT");
+			this.logScript = environment.getProperty("application.etc.LOG_SCRIPT");
 			
 			// set user properties
 			this.userUrl = environment.getProperty("spring.user.datasource.hikari.jdbc-url");
@@ -101,7 +103,7 @@ public class PsqlClientComponent implements EnvironmentAware {
 			}
 		}	
 
-		private List<String> getEnvs( String kind ) {
+		private List<String> getSchemaEnvs( String kind, String schema, String date, String time, String key) {
 			
 			List<String> envs = new ArrayList<>();
 			
@@ -126,21 +128,38 @@ public class PsqlClientComponent implements EnvironmentAware {
 				break;
 			}
 			
+			envs.add( String.format( "FILE_NAME=%s.%sT%s.tar.gz.enc", schema, date, time ) );
+			envs.add( String.format( "SCHEMA=%s", schema ) );
+			envs.add( String.format( "KEY=%s", key ) );
+			
+			return envs;
+		}
+
+		private List<String> getLogEnvs( String filename, String key ) {
+			
+			List<String> envs = new ArrayList<>();
+			
+			// process.runtime.exec param portal envArray
+			envs.add( String.format( "FILE_NAME=%s", filename ) );
+			envs.add( String.format( "KEY=%s", key ) );
+			
 			return envs;
 		}
 		
-		private List<String> getCommand( String schema, String date ) {
+		private List<String> getCommand( String scriptName ) {
 			
 			List<String> cmd = new ArrayList<>();
-			cmd.add( "/home/naru/temp/worker.sh" );
+			
+			String script = this.dirPath + "/" + scriptName; 
+			cmd.add( script );
 			
 			return cmd;
 		}
 		
 		// run script
-		private void RunScript ( String[] envs, String[] cmd, File dir, String schemaName ) {
+		private void RunScript ( String[] envs, String[] cmd, File dir, String workName ) {
 			//
-			log.info( String.format("Init to %s !!", schemaName) );
+			log.info( "Init to {} !!", workName );
 			
 			StringBuilder stdoutLog = new StringBuilder();
 			StringBuilder stderrLog = new StringBuilder();
@@ -175,10 +194,7 @@ public class PsqlClientComponent implements EnvironmentAware {
 					log.error( stderrLog.toString() );
 				}
 				
-				//
-//				log.info( output.toString() );
-				//
-				log.info( String.format("Success to %s !!", schemaName) );
+				log.info( "Success to {} !!", workName );
 				
 			} catch (IOException e) {
 				log.error( ErrorLogMessage.getPrintStackTrace( e ) );	
@@ -192,25 +208,43 @@ public class PsqlClientComponent implements EnvironmentAware {
 			}
 		}
 		
-		// main method 
-		public String doDump( String schema, String date, String time, String kind, String key ) {
+		// dump DB schemas 
+		public String doDumpSchemas( String schema, String date, String time, String kind, String key ) {
 			
-			List<String> envp = this.getEnvs( kind );
+			List<String> envp = this.getSchemaEnvs(kind, schema, date, time, key);
 			
-			envp.add( String.format( "FILE_NAME=%s.%sT%s.tar.gz.enc", schema, date, time ) );
-			envp.add( String.format( "SCHEMA=%s", schema ) );
-			envp.add( String.format( "KEY=%s", key ) );
+			List<String> cmd = this.getCommand( this.schemaScript );
 			
-			List<String> cmd = this.getCommand( schema, date );
-			
-			log.error( " cmd : {}", String.join( " ", cmd ) );
-			
-			log.error( "{}", String.join(" ", cmd.toArray( new String[ cmd.size() ] ) ) );
+//			log.error( " cmd : {}", String.join( " ", cmd ) );
+//			
+//			log.error( "{}", String.join(" ", cmd.toArray( new String[ cmd.size() ] ) ) );
 			
 			this.RunScript( envp.toArray( new String[ envp.size() ]), 
 					cmd.toArray( new String[ cmd.size() ]),
 					new File( dirPath ),
 					schema
+					); 
+			
+			return String.join( " ", cmd.toArray( new String[ cmd.size() ]) ); 
+		}
+		
+		// dump Logs 
+		public String doDumpLogs( String filename, String key ) {
+			
+			List<String> envp = this.getLogEnvs( filename, key );
+			
+			List<String> cmd = this.getCommand( this.logScript );
+			
+//			log.error( " cmd : {}", String.join( " ", cmd ) );
+//			
+//			log.error( "cmd to array {}", String.join(" ", cmd.toArray( new String[ cmd.size() ] ) ) );
+//			
+//			log.error( "envp to array {}", String.join(" ", envp.toArray( new String[ envp.size() ] ) ) );
+			
+			this.RunScript( envp.toArray( new String[ envp.size() ]), 
+					cmd.toArray( new String[ cmd.size() ]),
+					new File( dirPath ),
+					dirPath
 					);
 			
 			return String.join( " ", cmd.toArray( new String[ cmd.size() ]) ); 

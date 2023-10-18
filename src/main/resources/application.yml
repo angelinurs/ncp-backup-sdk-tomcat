@@ -102,7 +102,11 @@ application:
   etc:
     DIR_PATH: /home/naru/temp/temp
     LOG_PATH: /backend-sys/backup-scheduler
-#    key: naru
+    # script naems
+    LOG_SCRIPT: backup_log.sh    
+    SCHEMA_SCRIPT: backup_schema.sh
+    # cron scheduler
+    SCHEDULE_TIME: "0 0 1 * * *"
 
 ---
 # dev
@@ -117,11 +121,15 @@ springdoc:
 
 application:
   etc:
-#    DIR_PATH: /home/naru/temp/temp
-    DIR_PATH: /app
-#    LOG_PATH: ${COMPANY}/${APP_PROP}
-#    LOG_PATH: /app/logs/${APP_PROP}
-    LOG_PATH: /app/logs/${COMPANY}/${APP_NAME}
+    # script location
+    DIR_PATH: /app/util
+    # log location
+    LOG_PATH: /app/logs/schema/${COMPANY}/${APP_NAME}
+    # script naems
+    LOG_SCRIPT: backup_log.sh    
+    SCHEMA_SCRIPT: backup_schema.sh
+    # cron scheduler
+    SCHEDULE_TIME: "0 0 1 * * *"
 ---
 # prod
 spring:
@@ -131,8 +139,14 @@ spring:
 
 application:
   etc:
-#    DIR_PATH: /home/naru/temp/temp
-    DIR_PATH: /app
-#    LOG_PATH: ${COMPANY}/${APP_PROP}
-    LOG_PATH: /app/logs/${COMPANY}/${APP_NAME}
+    # script location
+    DIR_PATH: /app/util
+    # log location
+    LOG_PATH: /app/logs/schema/${COMPANY}/${APP_NAME}
+    # script naems
+    LOG_SCRIPT: backup_log.sh    
+    SCHEMA_SCRIPT: backup_schema.sh
+    # cron scheduler
+    SCHEDULE_TIME: "0 0 1 * * *"
+    
       

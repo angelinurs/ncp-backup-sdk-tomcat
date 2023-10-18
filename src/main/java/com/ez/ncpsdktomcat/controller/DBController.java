@@ -19,11 +19,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ez.ncpsdktomcat.common.FileEncrypterDecrypter;
+import com.ez.ncpsdktomcat.common.GzipComponent;
 import com.ez.ncpsdktomcat.service.BackupComponent;
 import com.ez.ncpsdktomcat.service.DBService;
-import com.ez.ncpsdktomcat.service.FileEncrypterDecrypter;
-import com.ez.ncpsdktomcat.service.GzipComponent;
-import com.ez.ncpsdktomcat.service.PsqlClientComponent;
+import com.ez.ncpsdktomcat.service.ScriptComponent;
+import com.ez.ncpsdktomcat.vo.LogMaterialVO;
 import com.ez.ncpsdktomcat.vo.TenencySchemaVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +41,7 @@ public class DBController {
 	private DBService dbService;
 	
 	@Autowired
-	private PsqlClientComponent psqlClientComponent;
+	private ScriptComponent psqlClientComponent;
 	
 	@Autowired
 	private BackupComponent backupComponent;
@@ -76,7 +77,7 @@ public class DBController {
 		String date = "$(date +%Y)-$(date +%m)-$(date +%d)";
 		String time = "$$(date +%H):$(date +%M):$(date +%S)";
 		
-		String command = psqlClientComponent.doDump(schema, date, time, "user", key );
+		String command = psqlClientComponent.doDumpSchemas(schema, date, time, "user", key );
 		
 		return command; 
 		
@@ -107,7 +108,7 @@ public class DBController {
 			
 			String time = vo.getTime().split( "[.]" )[0];
 			
-			String command = psqlClientComponent.doDump( vo.getSchema(), vo.getDate(), time, "user", key );
+			String command = psqlClientComponent.doDumpSchemas( vo.getSchema(), vo.getDate(), time, "user", key );
 			
 			Instant endTime = Instant.now();
 			
@@ -130,13 +131,29 @@ public class DBController {
 		
 	}
 	
-	@GetMapping("/dumpall_2")
-	public String dumpall_2() {
-		List<TenencySchemaVO> users = backupComponent.dumpall( "user" );
-		List<TenencySchemaVO> portals = backupComponent.dumpall( "portal" );
+	@GetMapping("/dumpall_schema")
+	public String dumpall_schema() {
+		String filePath = "/home/naru/temp/temp/";
+		String objectFolderName = "schemas/";
 		
-		backupComponent.exportToObjectStorage( users );
-		backupComponent.exportToObjectStorage( portals );
+		List<TenencySchemaVO> users = backupComponent.dumpallDBSchema( "user" );
+		List<TenencySchemaVO> portals = backupComponent.dumpallDBSchema( "portal" );
+		
+		backupComponent.exportToObjectStorage( users, filePath, objectFolderName );
+		backupComponent.exportToObjectStorage( portals, filePath, objectFolderName );
+		
+		return "done";
+	}
+	
+	@GetMapping("/dumpall_logs")
+	public String dumpall_logs() {
+//		String filePath = "/home/naru/temp/temp/";
+		String filePath = "/app/logs/";
+		String objectFolderName = "logs/";
+		String key = "naru";
+		
+		List<LogMaterialVO> logMaterialVOs = backupComponent.dumpallLogs(key);
+		backupComponent.exportToObjectStorage( logMaterialVOs );
 		
 		return "done";
 	}

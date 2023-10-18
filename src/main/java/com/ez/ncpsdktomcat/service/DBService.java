@@ -6,12 +6,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.ez.ncpsdktomcat.vo.TenencySchemaVO;
 
-import lombok.AllArgsConstructor;
-
-@AllArgsConstructor
 public class DBService {
 		
 	private JdbcTemplate jdbcTemplate;
+	
+	public DBService( JdbcTemplate jdbcTemplate ) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
 	
 	public List<TenencySchemaVO> getSchemaList() {
 		
@@ -34,7 +35,6 @@ public class DBService {
 				);
 		
 		return results;
-
 	}
 
 }

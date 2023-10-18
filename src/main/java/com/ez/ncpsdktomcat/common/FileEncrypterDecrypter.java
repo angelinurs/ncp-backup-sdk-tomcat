@@ -1,4 +1,4 @@
-package com.ez.ncpsdktomcat.service;
+package com.ez.ncpsdktomcat.common;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

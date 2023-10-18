@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.amazonaws.services.s3.model.Bucket;
+import com.ez.ncpsdktomcat.config.ObjectStorageProps;
 import com.ez.ncpsdktomcat.service.ObjectStorageS3;
 
 @RestController
@@ -17,11 +18,14 @@ import com.ez.ncpsdktomcat.service.ObjectStorageS3;
 public class S3ObjectStorageController {
 	
 	@Autowired
+	ObjectStorageProps objectStorageProps;
+	
 	private ObjectStorageS3 objectStorageS3;
 	
 	
 	@GetMapping("/list/bucket" )
 	public String getBucketList() {
+		objectStorageS3 = new ObjectStorageS3(objectStorageProps);
 		List<Bucket> buckets = objectStorageS3.getBucketList();
 		
 		StringBuilder sb = new StringBuilder();
@@ -35,12 +39,14 @@ public class S3ObjectStorageController {
 	
 	@GetMapping("/list/object/{bucketName}" )
 	public void getObjectList( @PathVariable String bucketName ) {
+		objectStorageS3 = new ObjectStorageS3(objectStorageProps);
 		
 		objectStorageS3.getObjectList( bucketName );
 	}
 	
 	@GetMapping("/create/{bucketName}" )
 	public void createBucket( @PathVariable String bucketName ) {
+		objectStorageS3 = new ObjectStorageS3(objectStorageProps);
 		bucketName = bucketName.replace( "_", "-" );
 		
 		objectStorageS3.createBucket( bucketName );
@@ -48,6 +54,7 @@ public class S3ObjectStorageController {
 	
 	@GetMapping("/delete/{bucketName}" )
 	public void deleteBucket( @PathVariable String bucketName ) {
+		objectStorageS3 = new ObjectStorageS3(objectStorageProps);
 		
 		objectStorageS3.deleteBucket( bucketName );
 	}
@@ -56,6 +63,7 @@ public class S3ObjectStorageController {
 	public void deleteObject( 
 			@PathVariable String bucketName,
 			@PathVariable String objectName ) {
+		objectStorageS3 = new ObjectStorageS3(objectStorageProps);
 		
 		objectStorageS3.deleteObject(bucketName, objectName);
 	}
@@ -64,6 +72,7 @@ public class S3ObjectStorageController {
 	public void uploadObject( 
 			@PathVariable String bucketName,
 			@PathVariable String objectName ) {
+		objectStorageS3 = new ObjectStorageS3(objectStorageProps);
 //		String filePath = "/home/naru/temp";
 		String schemaName = "psm_sc_svc171";
 		String filename = "psm_sc_svc171.2023-09-22T16:11:27.tar.gz.enc";
@@ -79,6 +88,7 @@ public class S3ObjectStorageController {
 			@PathVariable String bucketName,
 			@PathVariable String objectName,
 			@PathVariable String objectFolder ) {
+		objectStorageS3 = new ObjectStorageS3(objectStorageProps);
 		String downloadPath = "/home/naru/temp/download";
 		
 		objectStorageS3.downloadObject(bucketName, objectFolder+"/"+objectName, downloadPath+"/"+objectName);

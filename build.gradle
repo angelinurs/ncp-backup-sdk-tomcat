@@ -71,4 +71,5 @@ tasks.named('test') {
 bootJar {
 	enabled=true
 	archiveFileName="BackupScheduler.jar"
-  }
+	exclude("com/ez/ncpsdktomcat/controller")
+}

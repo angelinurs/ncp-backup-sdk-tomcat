@@ -1,0 +1,64 @@
+package com.ez.ncpsdktomcat.scheduler;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+import com.ez.ncpsdktomcat.config.EtcProps;
+import com.ez.ncpsdktomcat.service.BackupComponent;
+import com.ez.ncpsdktomcat.vo.LogMaterialVO;
+import com.ez.ncpsdktomcat.vo.TenencySchemaVO;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Component
+public class BackupScheduler {
+	
+	@Autowired
+	private BackupComponent backupComponent;
+
+//	@Scheduled(cron="0/10 * * * * *")
+//	@Scheduled(cron="0 0 0 1 * * *")
+	@Scheduled(cron="${application.etc.SCHEDULE_TIME}")
+	public void backupTask() {
+		
+		String job_of_dumpall_schema = dumpall_schema();
+		String job_of_dumpall_logs = dumpall_logs();
+		
+		log.info(job_of_dumpall_schema);
+		log.info(job_of_dumpall_logs);
+	}
+	
+
+	public String dumpall_schema() {
+		String filePath = "/app";
+		String objectFolderName = "schemas/";
+		
+		List<TenencySchemaVO> users = backupComponent.dumpallDBSchema( "user" );
+		List<TenencySchemaVO> portals = backupComponent.dumpallDBSchema( "portal" );
+		
+		if( users != null ) {
+			backupComponent.exportToObjectStorage( users, filePath, objectFolderName );			
+		}
+		if( portals != null ) {
+			backupComponent.exportToObjectStorage( portals, filePath, objectFolderName );			
+		}
+		
+		return "backup DB schema is done.";
+	}
+
+	public String dumpall_logs() {
+		String key = "naru";
+		
+		List<LogMaterialVO> logMaterialVOs = backupComponent.dumpallLogs(key);
+		
+		if( logMaterialVOs != null ) {
+			backupComponent.exportToObjectStorage( logMaterialVOs );			
+		}
+		
+		return "backup logs is done.";
+	}
+}

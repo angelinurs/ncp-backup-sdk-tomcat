@@ -22,7 +22,4 @@ public class TenencySchemaVO {
 				this.getStatus()
 				); 
 	}
-	
-	
-
 }

@@ -2,6 +2,7 @@ package com.ez.ncpsdktomcat.service;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.ez.ncpsdktomcat.common.FileUtils;
+import com.ez.ncpsdktomcat.config.ObjectStorageProps;
+import com.ez.ncpsdktomcat.vo.LogMaterialVO;
 import com.ez.ncpsdktomcat.vo.TenencySchemaVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +22,10 @@ import lombok.extern.slf4j.Slf4j;
 public class BackupComponent {
 	
 	@Autowired
-	private PsqlClientComponent psqlClientComponent;
+	private ScriptComponent scriptComponent;
+	
+	@Autowired
+	private LogCollector logCollector;
 	
 	@Autowired
 	@Qualifier( value = "userJdbcTemplate" )
@@ -30,9 +36,12 @@ public class BackupComponent {
 	private JdbcTemplate portalJdbcTemplate;
 	
 	@Autowired
+	private ObjectStorageProps objectStorageProps;
+	
 	private ObjectStorageS3 objectStorageS3;
 	
-	public List<TenencySchemaVO> dumpall( String kind ) {
+	public List<TenencySchemaVO> dumpallDBSchema( String kind ) {
+		
 		String key = "naru";		
 //		String kind = "user";
 		
@@ -46,7 +55,6 @@ public class BackupComponent {
 		case "portal":
 			jdbcTemplate = portalJdbcTemplate;			
 			break;
-			
 		}
 		
 		if( jdbcTemplate == null ) {
@@ -67,7 +75,7 @@ public class BackupComponent {
 			
 			String time = vo.getTime().split( "[.]" )[0];
 			
-			String command = psqlClientComponent.doDump( vo.getSchema(), vo.getDate(), time, kind, key );
+			String command = scriptComponent.doDumpSchemas( vo.getSchema(), vo.getDate(), time, kind, key );
 			
 			Instant endTime = Instant.now();
 			
@@ -89,25 +97,123 @@ public class BackupComponent {
 		return results;
 	} 
 	
-	public void exportToObjectStorage( List<TenencySchemaVO> schemaVOs ) {
+	public List<LogMaterialVO> dumpallLogs( String key ) {
+		
+//		key = "naru";
+
+		// inquiry list of logs
+		String[] logs = null;	
+//		logs = logCollector.getLogs( "/home/naru/temp/log_test", "text.log" );
+		
+		String logPath = "/app/logs";
+		logs = logCollector.getLogs( logPath, ".log" );
+		
+		List<LogMaterialVO> logMaterialVOs = new ArrayList<>();
+		
+		log.info("============ Start Backup ================");
+		
+		// dump, compress, encrypt all schema 
+		for( String logfile : logs ) {
+			
+			LogMaterialVO vo = new LogMaterialVO( logfile, key );
+
+			if( ! vo.isValid() ) {
+				continue;
+			}
+			
+			logMaterialVOs.add( vo );
+			
+			log.info("# # == Start ==" );
+			
+			
+			Instant startTime = Instant.now();
+			
+			String command = scriptComponent.doDumpLogs( logfile, key );
+			
+			Instant endTime = Instant.now();
+			
+			long diffTime = Duration.between(startTime, endTime).toMillis();
+			
+			StringBuilder sbStatus = new StringBuilder();
+			sbStatus.append( String.format( "\n# # ======= %s %s- work table =======\n", vo.getTenentName(), vo.getFileName() ) )
+					.append( String.format( "Start Time    : %s\n", startTime) )
+					.append( String.format( "End   Time    : %s\n", endTime) )
+					.append( String.format( "Duration      : %s\n", diffTime) )
+//					.append( String.format( "shell command : %s\n", command) )
+					.append( "# # == End ==" );
+			
+			log.info( sbStatus.toString() );
+			
+		}
+		log.info("============= End Backup ================");
+		
+		return logMaterialVOs;
+	} 
+
+	// Tenent Application logs
+	public void exportToObjectStorage( List<LogMaterialVO> logMaterialVOs ) {
+		
+		objectStorageS3 = new ObjectStorageS3(objectStorageProps);
 
 //		String schemaName = "psm_sc_svc171";
 //		String filename = "psm_sc_svc171.2023-09-22T16:11:27.tar.gz.enc";
 //		String filePath = String.format( "/home/naru/temp/temp/%s", filename );
 		
-		String filePath = "/home/naru/temp/temp/";
-		String objectFolderName = "schemas/";
+//		filePath = "/home/naru/temp/temp/";
+		String objectFolderName = "logs/";
+		
+		for( LogMaterialVO vo : logMaterialVOs ) {
+			if( ! vo.isValid() ) {
+				continue;
+			}
+			String schemaName = vo.getTenentName();
+			String bucketName = vo.getTenentName();
+			
+			String objectName = vo.getFianlFileName();
+			String sourceFile = vo.getFinalSourcePath();
+			String objectPath = vo.getObjectPath();
+			
+			objectStorageS3.createBucket( bucketName );
+			objectStorageS3.uploadObject( bucketName, objectFolderName, objectFolderName + objectPath + objectName, sourceFile );
+			
+			FileUtils.deleteLogFile( vo.getSourcePath() );
+			FileUtils.deleteLogFile( sourceFile );
+			FileUtils.deleteLogFile( sourceFile.replace(".gz", "") );
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append( String.format( "\n============================\n" ) )
+			  .append( String.format( "+ Schema   name : %s\n", schemaName ) )
+			  .append( String.format( "============================\n" ) )
+			  .append( String.format( "+ Source   Path : %s\n", sourceFile ) )
+			  .append( String.format( "+ Bucket   name : %s\n", bucketName ) )
+			  .append( String.format( "+ Object   name : %s\n", objectName ) )
+			  .append( String.format( "+ Object   Path : %s\n",  objectFolderName + objectPath + objectName ) )
+			  .append( String.format( "============================\n" ) );
+			
+			log.error(sb.toString());
+			
+		}
+	}
+	
+	// Tenent DB Schema
+	public void exportToObjectStorage( List<TenencySchemaVO> schemaVOs, String filePath, String objectFolderName ) {
+		
+		objectStorageS3 = new ObjectStorageS3(objectStorageProps);
+		
+//		String schemaName = "psm_sc_svc171";
+//		String filename = "psm_sc_svc171.2023-09-22T16:11:27.tar.gz.enc";
+//		String filePath = String.format( "/home/naru/temp/temp/%s", filename );
 		
 		for( TenencySchemaVO vo : schemaVOs ) {
 			String schemaName = vo.getSchema();
 			String bucketName = schemaName.replace( "_", "-" );
 			
 			String filename = FileUtils.getFileList( filePath, schemaName );			 
-			String objectName = filename;			
+			String objectName = filename;
 			
 			objectStorageS3.createBucket( bucketName );
 			objectStorageS3.uploadObject( bucketName, objectFolderName, objectFolderName+objectName, filePath + filename );
-			FileUtils.deleteFile(filePath, schemaName);
+			FileUtils.deleteSchemaFile( filePath, schemaName );
 			
 		}
 	}
