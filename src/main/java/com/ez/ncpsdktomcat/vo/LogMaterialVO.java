@@ -26,12 +26,12 @@ public class LogMaterialVO {
 		this.valid = items[3].equals( "schema" )? true: false;
 		
 		if( valid ) {
-			this.tenentName = items[ 4 ];
-			if( this.tenentName.startsWith( "svc" ) ) {
-				this.tenentName = String.format( "psm-sc-%s", this.tenentName );
-			}
+//			this.tenentName = items[ 4 ];
+//			if( this.tenentName.startsWith( "svc" ) ) {
+//				this.tenentName = String.format( "psm-sc-%s", this.tenentName );
+//			}
 			
-			this.tenentName = items[ 4 ].startsWith( "svc" )? String.format( "psm_sc_%s", this.tenentName ): items[ 4 ];
+			this.tenentName = items[ 4 ].startsWith( "svc" )? String.format( "psm-sc-%s", items[ 4 ] ): items[ 4 ];
 			
 			this.fileName = items[ items.length-1 ];
 			this.fianlFileName = this.fileName + ".enc.gz";
