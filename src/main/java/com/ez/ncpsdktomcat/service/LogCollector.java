@@ -7,12 +7,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.ez.ncpsdktomcat.common.ErrorLogMessage;
 import com.ez.ncpsdktomcat.common.FileUtils;
-import com.ez.ncpsdktomcat.config.EtcProps;
 
 import lombok.extern.slf4j.Slf4j;
 /**
@@ -36,14 +34,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 public class LogCollector {
-	
-	@Autowired
-	private EtcProps etcProps;
-		
+			
 	public String[] getLogs( String logPath, String extension ) {
-//		String logPath = LOG_PATH + TENENT ;
-//		String logPath = LOG_PATH + tenent ;
-		
+
 		log.info( "=== Start File List ===" );
 		log.info( "= + log Path : {} ", logPath );
 		

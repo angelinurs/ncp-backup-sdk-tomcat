@@ -1,4 +1,4 @@
-package com.ez.ncpsdktomcat.service;
+package com.ez.ncpsdktomcat.deprecated;
 
 import java.io.File;
 import java.io.FileOutputStream;

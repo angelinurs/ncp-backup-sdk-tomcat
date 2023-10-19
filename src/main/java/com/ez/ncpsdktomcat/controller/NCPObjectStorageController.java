@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ez.ncpsdktomcat.common.ErrorLogMessage;
 import com.ez.ncpsdktomcat.config.ObjectStorageProps;
-import com.ez.ncpsdktomcat.service.ObjectStorageService;
-
+import com.ez.ncpsdktomcat.deprecated.ObjectStorageService;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -11,43 +11,45 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.ez.ncpsdktomcat.vo.TenencySchemaVO;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class FileUtils {
 
-	public static String getFileList( String dirName, String schemaName ) {
-	       
-        File dir = new File(dirName);
-        File files[] = dir.listFiles();
+	public static boolean getFileExist( TenencySchemaVO vo ) {
+		
+		String filename = vo.getAbsolutePath();
+			       
+        File file = new File( filename );
         
-        String targetFilename = "";
-        
-        for( File file : files ) {
-        	
-        	if( file.isFile() && file.getName().startsWith(schemaName) ) {
-        		targetFilename  = file.getName();
-        		log.info( "{} is exists. ", targetFilename );
-        		break;
-        	} else {
-        		log.info( "{} is not exists. ", targetFilename );
-        		
-        	}
+        if( ! file.exists() ) {
+    		log.info( "{} is not exists. ", filename );
+    		return false;
+        } else {
+        	log.info( "{} is exists. ", filename );
+        	return true;
         }
         
-		return targetFilename;
 	}
 	
-	public static void deleteSchemaFile( String dirName, String schemaName ) {
-		String filename = getFileList(dirName, schemaName);
-		
-		if( filename.length() > 0 ) {
-			File file = new File( dirName + filename );
-			if( file.delete() ) {
-				log.info( "{} is deleted.", filename );				
-			} else {
-				log.info( "{} is not deleted.", filename );
+	public static boolean deleteSchemaFile( TenencySchemaVO vo ) {
+		if( getFileExist(vo) ) {
+			String filename = vo.getAbsolutePath();
+			
+			if( filename.length() > 0 ) {
+				File file = new File( filename );
+				if( file.delete() ) {
+					log.info( "{} is deleted.", filename );				
+				} else {
+					log.info( "{} is not deleted.", filename );
+				}	
 			}
+			
+			return true;
+		} else {
+			return false;
 		}
 	}
 	
@@ -68,7 +70,9 @@ public class FileUtils {
 	    Files.walkFileTree(Paths.get(dir), new SimpleFileVisitor<Path>() {
 	        @Override
 	        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
-	            if ( !Files.isDirectory(file) && file.getFileName().toString().endsWith( extension ) ) {
+//	        	String patternString = "^.*-.*[.]log[.]enc[.]gz$";
+	        	String patternString = "^.*-.*[.]log$";
+	            if ( !Files.isDirectory(file) && file.getFileName().toString().matches(patternString)) {
 	                fileList.add( file.toAbsolutePath().toString() );
 	            }
 	            return FileVisitResult.CONTINUE;

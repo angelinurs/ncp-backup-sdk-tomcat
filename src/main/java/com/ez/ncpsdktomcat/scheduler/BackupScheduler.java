@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.ez.ncpsdktomcat.config.EtcProps;
 import com.ez.ncpsdktomcat.service.BackupComponent;
 import com.ez.ncpsdktomcat.vo.LogMaterialVO;
 import com.ez.ncpsdktomcat.vo.TenencySchemaVO;
@@ -25,26 +24,23 @@ public class BackupScheduler {
 	@Scheduled(cron="${application.etc.SCHEDULE_TIME}")
 	public void backupTask() {
 		
-		String job_of_dumpall_schema = dumpall_schema();
+//		String job_of_dumpall_schema = dumpall_schema();
 		String job_of_dumpall_logs = dumpall_logs();
 		
-		log.info(job_of_dumpall_schema);
+//		log.info(job_of_dumpall_schema);
 		log.info(job_of_dumpall_logs);
 	}
-	
 
 	public String dumpall_schema() {
-		String filePath = "/app";
-		String objectFolderName = "schemas/";
 		
 		List<TenencySchemaVO> users = backupComponent.dumpallDBSchema( "user" );
 		List<TenencySchemaVO> portals = backupComponent.dumpallDBSchema( "portal" );
 		
 		if( users != null ) {
-			backupComponent.exportToObjectStorage( users, filePath, objectFolderName );			
+			backupComponent.exportSchemasToObjectStorage( users );			
 		}
 		if( portals != null ) {
-			backupComponent.exportToObjectStorage( portals, filePath, objectFolderName );			
+			backupComponent.exportSchemasToObjectStorage( portals );			
 		}
 		
 		return "backup DB schema is done.";
@@ -56,7 +52,7 @@ public class BackupScheduler {
 		List<LogMaterialVO> logMaterialVOs = backupComponent.dumpallLogs(key);
 		
 		if( logMaterialVOs != null ) {
-			backupComponent.exportToObjectStorage( logMaterialVOs );			
+			backupComponent.exportLogsToObjectStorage( logMaterialVOs );			
 		}
 		
 		return "backup logs is done.";

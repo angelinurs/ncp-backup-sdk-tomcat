@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.List;
 
 import javax.crypto.KeyGenerator;
@@ -23,7 +21,6 @@ import com.ez.ncpsdktomcat.common.FileEncrypterDecrypter;
 import com.ez.ncpsdktomcat.common.GzipComponent;
 import com.ez.ncpsdktomcat.service.BackupComponent;
 import com.ez.ncpsdktomcat.service.DBService;
-import com.ez.ncpsdktomcat.service.ScriptComponent;
 import com.ez.ncpsdktomcat.vo.LogMaterialVO;
 import com.ez.ncpsdktomcat.vo.TenencySchemaVO;
 
@@ -41,16 +38,13 @@ public class DBController {
 	private DBService dbService;
 	
 	@Autowired
-	private ScriptComponent psqlClientComponent;
-	
-	@Autowired
 	private BackupComponent backupComponent;
 	
 	private FileEncrypterDecrypter fileEncrypterDecrypter;
 	
 	@Autowired
 	private GzipComponent gzipComponent;
-		
+	
 	@GetMapping("/list2")
 	public String getSchemaList2() {
 		
@@ -70,90 +64,37 @@ public class DBController {
 		
 	}
 	
-	@GetMapping("/dump")
-	public String doDump() {
-		String key = "naru";
-		String schema = "psm_sc_svc171";	
-		String date = "$(date +%Y)-$(date +%m)-$(date +%d)";
-		String time = "$$(date +%H):$(date +%M):$(date +%S)";
-		
-		String command = psqlClientComponent.doDumpSchemas(schema, date, time, "user", key );
-		
-		return command; 
-		
-	}
-	
-	@GetMapping("dumpall")
-	public String dumpall() {
-		String key = "naru";
-		
-		dbService = new DBService( jdbcTemplate );
-		
-		// inquiry schema list
-		List<TenencySchemaVO> results =  dbService.getSchemaList();
-		
-		log.info("============ Start Backup ================");
-		StringBuilder sb = new StringBuilder();
-		for( TenencySchemaVO vo : results ) {
-			sb.append( vo.toString() ).append( "<br />" );
-		}
-		
-		log.info( "result index 0 : {}", results.get(0) );
-
-		for( TenencySchemaVO vo : results ) {
-			
-			log.info("\n# # == Start ==" );
-			
-			Instant startTime = Instant.now();
-			
-			String time = vo.getTime().split( "[.]" )[0];
-			
-			String command = psqlClientComponent.doDumpSchemas( vo.getSchema(), vo.getDate(), time, "user", key );
-			
-			Instant endTime = Instant.now();
-			
-			long diffTime = Duration.between(startTime, endTime).toMillis();
-			
-			StringBuilder sbStatus = new StringBuilder();
-			sbStatus.append( String.format( "======= %s - work table =======\n", vo.getSchema() ) )
-			  		.append( String.format( "Start Time    : %s\n", startTime) )
-			  		.append( String.format( "End   Time    : %s\n", endTime) )
-			  		.append( String.format( "Duration      : %s\n", diffTime) )
-//					.append( String.format( "shell command : %s\n", command) )
-					.append( "" );
-			
-			log.info("# # == End ==\n" );
-			
-		}
-		log.info("============= End Backup ================");
-		
-		return sb.toString();
-		
-	}
+//	@GetMapping("/dump")
+//	public String doDump() {
+//		String key = "naru";
+//		String schema = "psm_sc_svc171";	
+//		String date = "$(date +%Y)-$(date +%m)-$(date +%d)";
+//		String time = "$$(date +%H):$(date +%M):$(date +%S)";
+//		
+//		String command = psqlClientComponent.doDumpSchemas( schema, date, time, "user", key );
+//		
+//		return command; 
+//		
+//	}
 	
 	@GetMapping("/dumpall_schema")
 	public String dumpall_schema() {
-		String filePath = "/home/naru/temp/temp/";
-		String objectFolderName = "schemas/";
 		
 		List<TenencySchemaVO> users = backupComponent.dumpallDBSchema( "user" );
 		List<TenencySchemaVO> portals = backupComponent.dumpallDBSchema( "portal" );
 		
-		backupComponent.exportToObjectStorage( users, filePath, objectFolderName );
-		backupComponent.exportToObjectStorage( portals, filePath, objectFolderName );
+		backupComponent.exportSchemasToObjectStorage( users );
+		backupComponent.exportSchemasToObjectStorage( portals );
 		
 		return "done";
 	}
 	
 	@GetMapping("/dumpall_logs")
 	public String dumpall_logs() {
-//		String filePath = "/home/naru/temp/temp/";
-		String filePath = "/app/logs/";
-		String objectFolderName = "logs/";
 		String key = "naru";
 		
 		List<LogMaterialVO> logMaterialVOs = backupComponent.dumpallLogs(key);
-		backupComponent.exportToObjectStorage( logMaterialVOs );
+		backupComponent.exportLogsToObjectStorage( logMaterialVOs );
 		
 		return "done";
 	}

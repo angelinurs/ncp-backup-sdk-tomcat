@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.springframework.stereotype.Component;
-
 import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -268,7 +266,6 @@ public class ObjectStorageS3 {
 	 * @implNote upload Object
 	 * 
 	 * @param bucketName  - specific bucket Name
-	 * @param schemaName  - specific schema Name
 	 * @param folderName  - create object folder
 	 * @param objectName  - destination file name
 	 * @param filePath    - source file path

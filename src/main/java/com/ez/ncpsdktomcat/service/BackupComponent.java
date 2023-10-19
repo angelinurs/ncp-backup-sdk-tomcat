@@ -73,9 +73,9 @@ public class BackupComponent {
 			
 			Instant startTime = Instant.now();
 			
-			String time = vo.getTime().split( "[.]" )[0];
+			vo.setKey(key);
 			
-			String command = scriptComponent.doDumpSchemas( vo.getSchema(), vo.getDate(), time, kind, key );
+			String command = scriptComponent.doDumpSchemas( vo, kind );
 			
 			Instant endTime = Instant.now();
 			
@@ -151,7 +151,7 @@ public class BackupComponent {
 	} 
 
 	// Tenent Application logs
-	public void exportToObjectStorage( List<LogMaterialVO> logMaterialVOs ) {
+	public void exportLogsToObjectStorage( List<LogMaterialVO> logMaterialVOs ) {
 		
 		objectStorageS3 = new ObjectStorageS3(objectStorageProps);
 
@@ -177,8 +177,8 @@ public class BackupComponent {
 			objectStorageS3.uploadObject( bucketName, objectFolderName, objectFolderName + objectPath + objectName, sourceFile );
 			
 			FileUtils.deleteLogFile( vo.getSourcePath() );
-			FileUtils.deleteLogFile( sourceFile );
-			FileUtils.deleteLogFile( sourceFile.replace(".gz", "") );
+//			FileUtils.deleteLogFile( sourceFile );
+//			FileUtils.deleteLogFile( sourceFile.replace(".gz", "") );
 			
 			StringBuilder sb = new StringBuilder();
 			sb.append( String.format( "\n============================\n" ) )
@@ -196,7 +196,7 @@ public class BackupComponent {
 	}
 	
 	// Tenent DB Schema
-	public void exportToObjectStorage( List<TenencySchemaVO> schemaVOs, String filePath, String objectFolderName ) {
+	public void exportSchemasToObjectStorage( List<TenencySchemaVO> schemaVOs ) {
 		
 		objectStorageS3 = new ObjectStorageS3(objectStorageProps);
 		
@@ -205,15 +205,33 @@ public class BackupComponent {
 //		String filePath = String.format( "/home/naru/temp/temp/%s", filename );
 		
 		for( TenencySchemaVO vo : schemaVOs ) {
-			String schemaName = vo.getSchema();
-			String bucketName = schemaName.replace( "_", "-" );
 			
-			String filename = FileUtils.getFileList( filePath, schemaName );			 
-			String objectName = filename;
-			
-			objectStorageS3.createBucket( bucketName );
-			objectStorageS3.uploadObject( bucketName, objectFolderName, objectFolderName+objectName, filePath + filename );
-			FileUtils.deleteSchemaFile( filePath, schemaName );
+			if( FileUtils.getFileExist( vo ) ) {
+				
+				StringBuilder sb = new StringBuilder();
+				
+				String schemaName = vo.getSchema();
+				String bucketName = schemaName;
+				String sourcefile = vo.getAbsolutePath();	 
+				String objectFolderName = vo.getObjectPath();
+				String objectName = objectFolderName + vo.getFileName();
+				
+				sb.append( "\n==========================================\n" )
+				  .append( "Schema     name : " ).append( schemaName ).append("\n")
+				  .append( "Bucket     name : " ).append( bucketName ).append("\n")
+				  .append( "SourceFile name : " ).append( sourcefile ).append("\n")
+				  .append( "Object     name : " ).append( objectName ).append("\n")
+				  .append( "==========================================\n" );
+				
+				log.info( sb.toString() );
+				
+				objectStorageS3.createBucket( bucketName );
+				objectStorageS3.uploadObject( bucketName, objectFolderName, objectName, sourcefile );
+				FileUtils.deleteSchemaFile( vo );
+				
+			} else {
+				continue;
+			}
 			
 		}
 	}

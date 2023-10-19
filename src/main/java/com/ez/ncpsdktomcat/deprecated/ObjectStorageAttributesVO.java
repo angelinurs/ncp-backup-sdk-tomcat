@@ -1,4 +1,4 @@
-package com.ez.ncpsdktomcat.vo;
+package com.ez.ncpsdktomcat.deprecated;
 
 import org.springframework.stereotype.Component;
 

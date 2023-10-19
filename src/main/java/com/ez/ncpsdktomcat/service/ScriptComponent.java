@@ -12,6 +12,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import com.ez.ncpsdktomcat.common.ErrorLogMessage;
+import com.ez.ncpsdktomcat.vo.TenencySchemaVO;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -103,7 +104,7 @@ public class ScriptComponent implements EnvironmentAware {
 			}
 		}	
 
-		private List<String> getSchemaEnvs( String kind, String schema, String date, String time, String key) {
+		private List<String> getSchemaEnvs( String kind, TenencySchemaVO vo) {
 			
 			List<String> envs = new ArrayList<>();
 			
@@ -128,9 +129,9 @@ public class ScriptComponent implements EnvironmentAware {
 				break;
 			}
 			
-			envs.add( String.format( "FILE_NAME=%s.%sT%s.tar.gz.enc", schema, date, time ) );
-			envs.add( String.format( "SCHEMA=%s", schema ) );
-			envs.add( String.format( "KEY=%s", key ) );
+			envs.add( String.format( "FILE_NAME=%s", vo.getAbsolutePath() ) );
+			envs.add( String.format( "SCHEMA=%s", vo.getSchema() ) );
+			envs.add( String.format( "KEY=%s", vo.getKey() ) );
 			
 			return envs;
 		}
@@ -209,9 +210,9 @@ public class ScriptComponent implements EnvironmentAware {
 		}
 		
 		// dump DB schemas 
-		public String doDumpSchemas( String schema, String date, String time, String kind, String key ) {
+		public String doDumpSchemas( TenencySchemaVO vo, String kind ) {
 			
-			List<String> envp = this.getSchemaEnvs(kind, schema, date, time, key);
+			List<String> envp = this.getSchemaEnvs(kind, vo );
 			
 			List<String> cmd = this.getCommand( this.schemaScript );
 			
@@ -222,7 +223,7 @@ public class ScriptComponent implements EnvironmentAware {
 			this.RunScript( envp.toArray( new String[ envp.size() ]), 
 					cmd.toArray( new String[ cmd.size() ]),
 					new File( dirPath ),
-					schema
+					vo.getSchema()
 					); 
 			
 			return String.join( " ", cmd.toArray( new String[ cmd.size() ]) ); 

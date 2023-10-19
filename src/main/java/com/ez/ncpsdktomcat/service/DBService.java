@@ -29,8 +29,7 @@ public class DBService {
 				(rs, rowNum) -> new TenencySchemaVO(
 										rs.getString( "schema" ),
 										rs.getString( "date" ),
-										rs.getString( "time" ),
-										0
+										rs.getString( "time" )
 										)
 				);
 		
