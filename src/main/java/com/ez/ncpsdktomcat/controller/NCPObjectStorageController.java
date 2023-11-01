@@ -63,7 +63,8 @@ public class NCPObjectStorageController {
 		  .append("REQUEST_TYPE : ").append( objectStorageProps.getREQUEST_TYPE()).append("<br />")
 		  .append("UNSIGNED_PAYLOAD : ").append( objectStorageProps.getUNSIGNED_PAYLOAD() ).append("<br />")
 		  .append("REGION_NAME : ").append( objectStorageProps.getREGION_NAME( )).append("<br />")
-		  .append("ENDPOINT : ").append( objectStorageProps.getENDPOINT() ).append("<br />")
+//		  .append("ENDPOINT : ").append( objectStorageProps.getENDPOINT() ).append("<br />")
+		  .append("ENDPOINT : ").append( objectStorageProps.getENDPOINT_SOUTH() ).append("<br />")
 		  .append("ACCESS_KEY : ").append( objectStorageProps.getACCESS_KEY() ).append("<br />")
 		  .append("SECRET_KEY : ").append( objectStorageProps.getSECRET_KEY() ).append("<br />");
 		

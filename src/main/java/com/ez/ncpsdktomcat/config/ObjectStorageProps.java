@@ -29,7 +29,8 @@ public class ObjectStorageProps {
     private SimpleDateFormat TIME_FORMATTER;
 
     private String REGION_NAME;
-    private String ENDPOINT;
+    private String ENDPOINT_SEOUL;
+    private String ENDPOINT_SOUTH;
     private String ACCESS_KEY;
     private String SECRET_KEY;
     private String TEST_KEY;

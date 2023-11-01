@@ -75,7 +75,8 @@ public class ObjectStorageS3 {
 	
 	public ObjectStorageS3( ObjectStorageProps objectStorageProps ) {
 
-		String endPoint = objectStorageProps.getENDPOINT();
+//		String endPoint = objectStorageProps.getENDPOINT();
+		String endPoint = objectStorageProps.getENDPOINT_SOUTH();
 		String regionName = objectStorageProps.getREGION_NAME();
 		String accessKey = objectStorageProps.getACCESS_KEY();
 		String secretKey = objectStorageProps.getSECRET_KEY();

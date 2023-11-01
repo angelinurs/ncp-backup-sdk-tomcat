@@ -38,17 +38,16 @@ public class BackupComponent {
 	@Autowired
 	private ObjectStorageProps objectStorageProps;
 	
+	private KeyBinder keyBinder;
+	
 	private ObjectStorageS3 objectStorageS3;
 	
 	public List<TenencySchemaVO> dumpallDBSchema( String kind ) {
 		/*
 		 * portal schema - key_tbl
-		 * idx, schema_name, key, date_modify, date_created 
+		 * idx, schema_name, key, date_modify, date_created
+		 * String key = "naru";
 		 */
-		
-		String key = "naru";
-		
-//		String kind = "user";
 		
 		JdbcTemplate jdbcTemplate = null;
 		
@@ -82,7 +81,11 @@ public class BackupComponent {
 			 * portal schema - key_tbl
 			 * idx, schema_name, key, date_modify, date_created 
 			 * String key = "naru";
+			 * key table in portal	
 			 */
+			
+			keyBinder = new KeyBinder( portalJdbcTemplate );
+			String key = keyBinder.getKey( vo.getProfile() );
 			
 			vo.setKey(key);
 			
@@ -108,9 +111,7 @@ public class BackupComponent {
 		return results;
 	} 
 	
-	public List<LogMaterialVO> dumpallLogs( String key ) {
-		
-//		key = "naru";
+	public List<LogMaterialVO> dumpallLogs() {
 
 		// inquiry list of logs
 		String[] logs = null;	
@@ -126,11 +127,18 @@ public class BackupComponent {
 		// dump, compress, encrypt all schema 
 		for( String logfile : logs ) {
 			
-			LogMaterialVO vo = new LogMaterialVO( logfile, key );
+			LogMaterialVO vo = new LogMaterialVO( logfile );
 
 			if( ! vo.isValid() ) {
 				continue;
 			}
+			
+			keyBinder = new KeyBinder( portalJdbcTemplate );
+
+//			String key = "naru";
+			String key = keyBinder.getKey( vo.getProfile() );
+			
+			vo.setKey( key );
 			
 			logMaterialVOs.add( vo );
 			
@@ -202,6 +210,14 @@ public class BackupComponent {
 			  .append( String.format( "============================\n" ) );
 			
 			log.error(sb.toString());
+			
+			objectStorageS3.createBucket( bucketName );
+			objectStorageS3.uploadObject( bucketName, objectFolderName, objectFolderName + objectPath + objectName, sourceFile );
+			
+			FileUtils.deleteLogFile( vo.getSourcePath() );
+			FileUtils.deleteLogFile( vo.getFinalSourcePath() );
+//			FileUtils.deleteLogFile( sourceFile );
+//			FileUtils.deleteLogFile( sourceFile.replace(".gz", "") );
 			
 		}
 	}

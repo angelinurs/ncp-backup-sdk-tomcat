@@ -27,7 +27,8 @@ public class JasyptObjectStorageController {
 		  .append("REQUEST_TYPE : ").append( objectStorageProps.getREQUEST_TYPE()).append("<br />")
 		  .append("UNSIGNED_PAYLOAD : ").append( objectStorageProps.getUNSIGNED_PAYLOAD() ).append("<br />")
 		  .append("REGION_NAME : ").append( objectStorageProps.getREGION_NAME( )).append("<br />")
-		  .append("ENDPOINT : ").append( objectStorageProps.getENDPOINT() ).append("<br />")
+//		  .append("ENDPOINT : ").append( objectStorageProps.getENDPOINT() ).append("<br />")
+		  .append("ENDPOINT : ").append( objectStorageProps.getENDPOINT_SOUTH() ).append("<br />")
 		  .append("ACCESS_KEY : ").append( objectStorageProps.getACCESS_KEY() ).append("<br />")
 		  .append("SECRET_KEY : ").append( objectStorageProps.getSECRET_KEY() ).append("<br />");
 		
@@ -47,6 +48,22 @@ public class JasyptObjectStorageController {
 		String userUsername = "psm_user";
 		String userPassword = "dlwltjxl2@";
         String userPoolName = "psm-user-backup-pool";
+                
+        String CHARSET_NAME = "UTF-8";
+        String HMAC_ALGORITHM = "HmacSHA256";
+        String HASH_ALGORITHM = "SHA-256";
+        String AWS_ALGORITHM = "AWS4-HMAC-SHA256";
+        
+        String SERVICE_NAME = "s3";
+        String REQUEST_TYPE = "aws4_request";
+        
+        String UNSIGNED_PAYLOAD = "UNSIGNED-PAYLOAD";
+        String REGION_NAME = "gov-standard";
+        String ENDPOINT_SEOUL = "https://kr.object.gov-ncloudstorage.com";
+        String ENDPOINT_SOUTH = "https://krs.object.gov-ncloudstorage.com";
+        String ACCESS_KEY = "LU2uVIWLmbQuI7ngYqnv";
+        String SECRET_KEY = "KjYrWWKoybZZXlycnlL8Vm9fCZ3VZqTQfnbSneYn";
+
         
 		StringBuilder sb = new StringBuilder();
 		sb.append("adminJjdbcUrl   : ").append("ENC(").append( jasyptEncoding(adminJjdbcUrl) ).append(")<br />")
@@ -58,7 +75,20 @@ public class JasyptObjectStorageController {
 		  .append("userUsername    : ").append("ENC(").append( jasyptEncoding(userUsername) ).append(")<br />")
 		  .append("userPassword    : ").append("ENC(").append( jasyptEncoding(userPassword) ).append(")<br />")
 		  .append("userPoolName    : ").append("ENC(").append( jasyptEncoding(userPoolName) ).append(")<br />")
-		  .append("driverclassname : ").append("ENC(").append( jasyptEncoding(driverclassname) ).append(")<br />");
+		  .append("driverclassname : ").append("ENC(").append( jasyptEncoding(driverclassname) ).append(")<br />")
+  		  .append("===============================================================<br />")
+  		  .append("CHARSET_NAME    : ").append("ENC(").append( jasyptEncoding(CHARSET_NAME) ).append(")<br />")
+  		  .append("HMAC_ALGORITHM  : ").append("ENC(").append( jasyptEncoding(HMAC_ALGORITHM) ).append(")<br />")
+  		  .append("HASH_ALGORITHM  : ").append("ENC(").append( jasyptEncoding(HASH_ALGORITHM) ).append(")<br />")
+  		  .append("AWS_ALGORITHM   : ").append("ENC(").append( jasyptEncoding(AWS_ALGORITHM) ).append(")<br />")
+  		  .append("SERVICE_NAME    : ").append("ENC(").append( jasyptEncoding(SERVICE_NAME) ).append(")<br />")
+  		  .append("REQUEST_TYPE    : ").append("ENC(").append( jasyptEncoding(REQUEST_TYPE) ).append(")<br />")
+  		  .append("UNSIGNED_PAYLOAD : ").append("ENC(").append( jasyptEncoding(UNSIGNED_PAYLOAD) ).append(")<br />")
+  		  .append("REGION_NAME     : ").append("ENC(").append( jasyptEncoding(REGION_NAME) ).append(")<br />")
+  		  .append("ENDPOINT_SEOUL  : ").append("ENC(").append( jasyptEncoding(ENDPOINT_SEOUL) ).append(")<br />")
+  		  .append("ENDPOINT_SOUTH  : ").append("ENC(").append( jasyptEncoding(ENDPOINT_SOUTH) ).append(")<br />")
+  		  .append("ACCESS_KEY      : ").append("ENC(").append( jasyptEncoding(ACCESS_KEY) ).append(")<br />")
+  		  .append("SECRET_KEY      : ").append("ENC(").append( jasyptEncoding(SECRET_KEY) ).append(")<br />");
 		
 		return sb.toString();
 		

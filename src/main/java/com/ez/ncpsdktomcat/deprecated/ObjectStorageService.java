@@ -219,7 +219,8 @@ public class ObjectStorageService {
     public void putObject(String bucketName, String objectName, String localFilePath) throws Exception {
         HttpClient httpClient = HttpClientBuilder.create().build();
 
-        HttpPut request = new HttpPut( objectStorageProps.getENDPOINT() + "/" + bucketName + "/" + objectName);
+//        HttpPut request = new HttpPut( objectStorageProps.getENDPOINT() + "/" + bucketName + "/" + objectName);
+        HttpPut request = new HttpPut( objectStorageProps.getENDPOINT_SOUTH() + "/" + bucketName + "/" + objectName);
         request.addHeader("Host", request.getURI().getHost());
         request.setEntity(new FileEntity(new File(localFilePath)));
 
@@ -232,7 +233,8 @@ public class ObjectStorageService {
     public void putObjectByByteArrayEntity(String bucketName, String objectName, byte[] bytes ) throws Exception {
     	HttpClient httpClient = HttpClientBuilder.create().build();
     	
-    	HttpPut request = new HttpPut( objectStorageProps.getENDPOINT() + "/" + bucketName + "/" + objectName);
+//    	HttpPut request = new HttpPut( objectStorageProps.getENDPOINT() + "/" + bucketName + "/" + objectName);
+    	HttpPut request = new HttpPut( objectStorageProps.getENDPOINT_SOUTH() + "/" + bucketName + "/" + objectName);
     	request.addHeader("Host", request.getURI().getHost());
     	request.setEntity( new ByteArrayEntity( bytes ) );
     	
@@ -245,7 +247,8 @@ public class ObjectStorageService {
 
     public void getObject(String bucketName, String objectName, String localFilePath) throws Exception {
         HttpClient httpClient = HttpClientBuilder.create().build();
-        HttpGet request = new HttpGet( objectStorageProps.getENDPOINT() + "/" + bucketName + "/" + objectName);
+//        HttpGet request = new HttpGet( objectStorageProps.getENDPOINT() + "/" + bucketName + "/" + objectName);
+        HttpGet request = new HttpGet( objectStorageProps.getENDPOINT_SOUTH() + "/" + bucketName + "/" + objectName);
         request.addHeader("Host", request.getURI().getHost());
 
         authorization(request,  objectStorageProps.getREGION_NAME(),  objectStorageProps.getACCESS_KEY(),  objectStorageProps.getSECRET_KEY() );
@@ -270,8 +273,10 @@ public class ObjectStorageService {
     public void listObjects(String bucketName, String queryString) throws Exception {
         HttpClient httpClient = HttpClientBuilder.create().build();
         
-        URI uri = new URI( objectStorageProps.getENDPOINT() + "/" + bucketName + "?" + queryString);
-        log.info( objectStorageProps.getENDPOINT() + "/" + bucketName + "?" + queryString );
+//        URI uri = new URI( objectStorageProps.getENDPOINT() + "/" + bucketName + "?" + queryString);
+//        log.info( objectStorageProps.getENDPOINT() + "/" + bucketName + "?" + queryString );
+        URI uri = new URI( objectStorageProps.getENDPOINT_SOUTH() + "/" + bucketName + "?" + queryString);
+        log.info( objectStorageProps.getENDPOINT_SOUTH() + "/" + bucketName + "?" + queryString );
         
         HttpGet request = new HttpGet(uri);
         request.addHeader("Host", request.getURI().getHost());

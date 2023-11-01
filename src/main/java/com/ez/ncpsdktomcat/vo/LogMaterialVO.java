@@ -4,22 +4,24 @@ import java.io.File;
 import java.util.Arrays;
 
 import lombok.Getter;
+import lombok.Setter;
 
+@Setter
 @Getter
 public class LogMaterialVO {
 	private String key;
 	
 	private String sourcePath;
 	private String tenentName;
+	private String profile;
 	private String fileName;
 	private String objectPath;
 	private String fianlFileName;
 	private String finalSourcePath;
 	private boolean valid;
 	
-	public LogMaterialVO( String sourcePath, String key ) {
+	public LogMaterialVO( String sourcePath ) {
 		this.sourcePath = sourcePath;
-		this.key = key;
 		
 		String[] items = sourcePath.split( "[/]" );
 		
@@ -31,7 +33,8 @@ public class LogMaterialVO {
 //				this.tenentName = String.format( "psm-sc-%s", this.tenentName );
 //			}
 			
-			this.tenentName = items[ 4 ].startsWith( "svc" )? String.format( "psm-sc-%s", items[ 4 ] ): items[ 4 ];
+			this.profile = items[ 4 ];
+			this.tenentName = this.profile.startsWith( "svc" )? String.format( "psm-sc-%s", this.profile ): this.profile;
 			
 			this.fileName = items[ items.length-1 ];
 			this.fianlFileName = this.fileName + ".enc.gz";

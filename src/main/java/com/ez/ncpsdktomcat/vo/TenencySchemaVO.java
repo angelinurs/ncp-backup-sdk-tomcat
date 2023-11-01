@@ -19,6 +19,9 @@ public class TenencySchemaVO {
 	private String schema;
 	private String date;
 	private String time;
+	
+	private String profile;
+	
 	private int status;
 	
 	public TenencySchemaVO( String schema, String date, String time ) {
@@ -32,6 +35,9 @@ public class TenencySchemaVO {
 		this.absolutePath = Paths.get( this.sourcePath, this.fileName )
 				                 .toAbsolutePath()
 				                 .toString();
+		
+		this.profile = this.schema.startsWith( "psm-sc-svc" )? this.schema.split("-")[2] 
+				                                             : "ez-sys";
 	}
 	
 	@Override

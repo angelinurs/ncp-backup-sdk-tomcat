@@ -93,7 +93,7 @@ public class DBController {
 	public String dumpall_logs() {
 		String key = "naru";
 		
-		List<LogMaterialVO> logMaterialVOs = backupComponent.dumpallLogs(key);
+		List<LogMaterialVO> logMaterialVOs = backupComponent.dumpallLogs();
 		backupComponent.exportLogsToObjectStorage( logMaterialVOs );
 		
 		return "done";
