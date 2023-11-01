@@ -47,6 +47,14 @@ public class BackupScheduler {
 	}
 
 	public String dumpall_logs() {
+		
+		/*
+		 * portal schema - 
+		 * tbl_name : key_tbl
+		 * idx, schema_name, key, date_modify, date_created 
+		 * String key = "naru";
+		 */ 
+		
 		String key = "naru";
 		
 		List<LogMaterialVO> logMaterialVOs = backupComponent.dumpallLogs(key);

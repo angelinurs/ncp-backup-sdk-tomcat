@@ -17,8 +17,10 @@ public class FileEncrypterDecrypter {
     private SecretKey secretKey;
     private Cipher cipher;
 
-    public FileEncrypterDecrypter(SecretKey secretKey, String cipher) throws NoSuchPaddingException, NoSuchAlgorithmException {
-        this.secretKey = secretKey;
+//    public FileEncrypterDecrypter(SecretKey secretKey, String cipher) throws NoSuchPaddingException, NoSuchAlgorithmException {
+//        this.secretKey = secretKey;
+    public FileEncrypterDecrypter(String cipher) throws NoSuchPaddingException, NoSuchAlgorithmException {
+        this.secretKey = KeyGenerator.getInstance("AES").generateKey();
         this.cipher = Cipher.getInstance(cipher);
     }
 

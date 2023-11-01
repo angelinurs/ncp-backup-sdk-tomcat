@@ -121,8 +121,9 @@ public class DBController {
 	    SecretKey secretKey = null;
 	    
 	    try {
-			secretKey = KeyGenerator.getInstance("AES").generateKey();
-			fileEncrypterDecrypter = new FileEncrypterDecrypter(secretKey, "AES/CBC/PKCS5Padding");
+//			secretKey = KeyGenerator.getInstance("AES").generateKey();
+//			fileEncrypterDecrypter = new FileEncrypterDecrypter(secretKey, "AES/CBC/PKCS5Padding");
+			fileEncrypterDecrypter = new FileEncrypterDecrypter( "AES/CBC/PKCS5Padding");
 			fileEncrypterDecrypter.encrypt(originalContent, filename );
 			
 			decryptedContent = fileEncrypterDecrypter.decrypt( filename );
@@ -141,8 +142,13 @@ public class DBController {
 		} catch (InvalidAlgorithmParameterException e) {
 			e.printStackTrace();
 		} 
-
-	    return String.format("originalContent : %s, decryptedContent : %s", originalContent, decryptedContent );
+	    
+	    StringBuilder sb = new StringBuilder();
+	    sb.append( "originalContent : "  ).append( originalContent ).append( "\n" )
+	      .append( "decryptedContent : " ).append( decryptedContent ).append( "\n" )
+	      .append( "same ? " ).append( originalContent.equals( decryptedContent ) ? "same": "not same" ).append( "\n" );
+	    
+	    return sb.toString();
 	}
 	
 }

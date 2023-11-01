@@ -41,8 +41,13 @@ public class BackupComponent {
 	private ObjectStorageS3 objectStorageS3;
 	
 	public List<TenencySchemaVO> dumpallDBSchema( String kind ) {
+		/*
+		 * portal schema - key_tbl
+		 * idx, schema_name, key, date_modify, date_created 
+		 */
 		
-		String key = "naru";		
+		String key = "naru";
+		
 //		String kind = "user";
 		
 		JdbcTemplate jdbcTemplate = null;
@@ -72,6 +77,12 @@ public class BackupComponent {
 			log.info("# # == Start ==" );
 			
 			Instant startTime = Instant.now();
+			
+			/*
+			 * portal schema - key_tbl
+			 * idx, schema_name, key, date_modify, date_created 
+			 * String key = "naru";
+			 */
 			
 			vo.setKey(key);
 			
