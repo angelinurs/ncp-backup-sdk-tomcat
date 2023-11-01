@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "application.object-storage.SERVICE_-nAME",
+  "type": "java.lang.String",
+  "description": "A description for 'application.object-storage.SERVICE_-nAME'"
+}]}
