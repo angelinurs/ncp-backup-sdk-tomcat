@@ -1,21 +1,25 @@
 application:
   object-storage:
-    CHARSET_NAME : ENC(U4Noslx7ZHq9rzBtf6dOkvHjHrdMC468edWHDGaMmWn7z3TPVJ05h3MMxNpcYfgK)
-    HMAC_ALGORITHM : ENC(HG7UWC8+Z+5FmX+/j8i3vALuMLlm0o9YJtizilsYuN8ebvbuZZpShSiXN8Nm1TL+)
-    HASH_ALGORITHM : ENC(N2rSjY4UgKXZyAbleROcynahmZsZIICMdAdn7fYbUbdzSwn9KjMFo5GsyvUSvGLv)
-    AWS_ALGORITHM : ENC(1fufspy1E1oxIDJmfwBAM44lnVbY/NbBYs/NzskR2XO0dj4LufkCYogia/IFcF7cvVGpI6UQq9KTDWMgw5Tq7Q==)
+    CHARSET_NAME : ENC(Pb4K3bwqBDVVx8doHTijhA1gEJH3/OLVx8SVmPPe9R366k4gyABUibhWJBru2BAc)
+    HMAC_ALGORITHM : ENC(DBEyaewCc06MGVrtzrf5TctjxK356w/XVrhFggQfZyNDfcccIl3lG7p45Qmz7iYc)
+    HASH_ALGORITHM : ENC(7/HoczhyYCwPLpr6aB5y/9TmLpo+H0n+eC5YTg6ZR8LBteEbcGKUVCJZYKzDbr+E)
+    AWS_ALGORITHM : ENC(CQcG8kqbg/mDzzrSYnqDU46/ZhurcoZnrcyksMTXbsW3m7JTv7Iccq7fOvZwMgzP3T7BcnsAsSA3bYE3muZQIA==)
 
-    SERVICE_NAME : ENC(OpDrU3hTdZKNVVzG7lJvdtJpfvYUdC1F7dHlg7XLIziCKh3xh1OLe66UuY7OOtZa)
-    REQUEST_TYPE : ENC(C7fdzk7O5Bwrp4KxhKgAc5PSQwFz5EV9LYKZMt2oaSedt0AOV9+cWJNcUM9cnKPI)
+    SERVICE_NAME : ENC(U+/Y+y9oEYI/zupvquRmPlPr+LK/R+Fyba7YKaHCE9YWGsf9ODLmccgsBAEjUmQi)
+    REQUEST_TYPE : ENC(80jHO91U6k98qYKkaYlywyAOjkPZsJ3c6igEwJUzFa0zPbK9kPXRqeLm6qvghCuw)
 
-    UNSIGNED_PAYLOAD : ENC(HJGUISNOrW94O5lUqeYyEDRqxW+OiPzOClo92wD0hjtgwuywEMZZCqHNv/I07IHIQnxSdW4h2iPOZ1U6eg0XGw==)
+    UNSIGNED_PAYLOAD : ENC(pGIo+HZGryv/DdCilsPRQMAkgmdOvtv2YkZvk/SAzhKP3G43pbJ898TyxiU7IdXHMa150O7M15pKrRDRXKf7ZA==)
 
     # Central resion
-    REGION_NAME : ENC(jATsEhW9zE8/pcjfwxA+iv8meKzhZbT87zRNg71bdcMzncjBANTrJOsnbrfYQNn2)
-    ENDPOINT_SEOUL : ENC(fiyqcuSODjgt5+lqpsZiuLiTlu0w1yGZ/CEa6QjsgJfpKSe0IHYzBC2C7iMWKXe8KIZlNubjUgCnKAGo/5JHQlcZW4R7M0B880Xumam20+0=)
-    ENDPOINT_SOUTH : ENC(5hHpDT7+AdXllsZyvMkO4OtrqXPSNBYgTZeT8uA0qEWFVHzcMLi6gTzfCD4CQIOcp34C6QQI3ejuY/08MBJIVDcUMowzdrrihY1qvgHSN0g=)
-    ACCESS_KEY : ENC(Ee1o7PVw70AMHEJknXUjNLy67L/3SSfBj7LT9V+yN2GOLN/hgYIQg+rNSyalLvvVzkJ3S3RwdsNlgwzaVoorHw==)
-    SECRET_KEY : ENC(Y/RXJAtj8jPM0VfLADwPEW4CJ38PG1ua1H7Rk9Dt4go8BKM+RPokmq5E+PYsNyT1XfvllHwq2bs4jUkkyCHaHMs2V5zAA8BsUjuz0q6Wh1k=)
+    REGION_NAME : ENC(H2+1s4qMBbrg70GgwxlS7zpYPjKJKrDtzIEWbJswmX6FcaT0vJSsOswYittd1VOz)
+    ENDPOINT_SEOUL : ENC(tQoyrzhE3bH7lLd/B6UAXvzAsZZtC31FRe1mDQ0+CsXEFYmJ6qWKUBLK02d29lC2dZYa6rgyraPScmTUloFw3ax8oOr62aVC0AtHMdT4fKE=)
+    ENDPOINT_SOUTH : ENC(ImX6mLxeIBABu0hB+sGH8ocTEy2TCSth7FT+jrDnCjULmCpdzqvR2HKZk8/o8xYYx7pFU23Xb3TZKbPVXCC5hLeaUdcT/15rqHQvcNduZUE=)
+    ACCESS_KEY : ENC(a3ya3bRrP+dWQkm+u99DvYkJWhijRXBRj3nIngKF3GV7UvzNVLItpMhUywjQXy5g8zFl30RCJrq19n6Y2cgGhQ==)
+    SECRET_KEY : ENC(qoPGifIVFj6rsa+nY/zYp1ZrSe3PZr560uAPXziHYq6eVJMCkVQO65RoNIJXBr5dM4EjmVJXr31ZUYctBf+vLJGCwKd8D1Ovj+dPnExKbrw=)
+    
+    # aws client v2
+    AWS_PATH: /usr/local/bin/aws
+    SYNC_BUCKET_COMMAND: "--endpoint-url=<objecturl> s3 sync s3://<source> s3://<destination>"
 
 jasypt:
   encryptor:
@@ -27,16 +31,16 @@ spring:
 #    name: ${APP_NAME}
     name: backup-manager
   profiles:
-    active: dev
+    active: prod
   # datasource
   portal:
     datasource:
       hikari:
-        driver-class-name: ENC(PVcCSf7RvQqVe/IYcx/KWt2Q6LnJ5KEUQX2XXbTy/ALTifxRAs9ba3h+HuGgCxCT2Wf1oYPQb1i3kP1NF415Ow==)        
-        jdbc-url: ENC(0MrjBojzCqtfidAeWdlM2xS+GQEePgeIhleP9bpUzGtYg8eXVusaX75V0MYLS7KfiKoeqpcd4tiEM0RZcTa7QU4IvOmsT9Jhl7DvrnxNfl7/G2NGb7GTa8u4iPxFVmmuNCZ5YhZrIMzvEICjKMr68sSC8GdZER1WXG3Ge+3jOhk=)
-        username: ENC(n7kbzMSiSbWGZru99M2haghOcZnap0kBWPGUVkM4HUnQQU39ubQ6Go0tmZNHIRZ5)
-        password: ENC(t8+XQqKsH6JKqty2N0T5DlRB8DxlnisJ+jo865l+q468zkUP+T0hGxIE+hEGIZeh)
-        pool-name: ENC(r9YGyZp01089DSdnLORQnI+p2BRoklEHcfdI2fqW1lAOPTVVGR0s60R29Pyg+B/uDiQ1f2k3KL9V6wO/1A73Jg==)
+        driver-class-name: ENC(sA7TFX4KYqOtvBfHmv5Yx/vRRVR2X878F+ddY1GZQ5ymjQj+kDHRkSEzMEE7WDmXtpW0JgV0/z2uYIzWug7gWg==)        
+        jdbc-url: ENC(4HrLGQaDfodOeavT8p1lDLUbiL24qTcYXsjIAOFCtoqGhanN2WDKU5tqYHvQRxZ5eLUE9deAnLK2/38yd0CKQ8Hltr0gf/cMHGAEAUkpNTonhUmBEchd0DZB8zwNCLmtaxg8xvDIFTI3OKopiVFm1Q==)
+        username: ENC(eUUU1ouTDKqclt+7ztK36ir+tOesZW+F4PXo4eCKifo6pfkoLVphwSAA4iYGnkOi)
+        password: ENC(uzVLoZHjaqSJ1e95SM9ksDCR4HI5Hy0Q8xJP+jv9HOHwHhWWBdy/bkybdYaUJxzj)
+        pool-name: ENC(k8zexv6I8EIh9fcd/l/51lXj7YphueUaLcbfyz15cuRwgFZDVnEDANXI6YVrpn7O2IakT2k2PQglBAOX8QzCqA==)
         # auto-commit: false
         # connection-test-query: SELECT 1
         # transaction-isolation: TRANSACTION_READ_UNCOMMITTED
@@ -51,11 +55,11 @@ spring:
   user:
     datasource:
       hikari:
-        driver-class-name: ENC(PVcCSf7RvQqVe/IYcx/KWt2Q6LnJ5KEUQX2XXbTy/ALTifxRAs9ba3h+HuGgCxCT2Wf1oYPQb1i3kP1NF415Ow==)        
-        jdbc-url: ENC(bakBb8jqc95XSS5vDqv4erOoClZbJAw4Y6xZjSfSdOwgtD9fC4i3Myt3TK3OSeh0sKDg5rqqbdBBMQNPCjw59SalxtjBSmFWEEXQPZgmhKma3pPgREffegJd1qDH0uWAF+dEmd975hBqJkKuoJ9R0/VhZ5vfuHkVAL1N4+Y19RI=)
-        username: ENC(BKdnWfzOf8msob8jije3hqS+hs21pSsoHtxujByiECHYZDeJrhSgWxuULU3Vd3nz)
-        password: ENC(4AAHx3tgCipsfg2XFdMZd8FGo/9r51rZ8ofj695N0ojTqV5dYIdULc635Hi+tSce)
-        pool-name: ENC(6G6W/gdGnvKWlvb+bGRbma79Vlx/RRyUo3XcCf1FTwWe6RF3QKuPBFBCUmphTVyjWZo7W6HqOQfxWUqXpbLG7A==)
+        driver-class-name: ENC(sA7TFX4KYqOtvBfHmv5Yx/vRRVR2X878F+ddY1GZQ5ymjQj+kDHRkSEzMEE7WDmXtpW0JgV0/z2uYIzWug7gWg==)        
+        jdbc-url: ENC(KI7TMeDtzn5dNv9J1wpitGQzALc7TE2b/xQ6kqg+bGkWUdxCBcNXKWwqymCRxn8TmZJsdwXsTYflkRB5z2P61sbdnCA5+Nt9RYtfbRCq6PPEphWESRdUiKP5B2Zr//2S)
+        username: ENC(G/7jX+WXSU8rnQ9FOS/qgxJpZIgYsDGuMk+4XA18p/EDB7hkpkT4jYxQMJzg/mgL)
+        password: ENC(gi5aiEATevLePrqRgLNbZUZEvUtKOHpeIP2YB13V2UbzHt+ZYkq6Hz9Ta6QptxKv)
+        pool-name: ENC(yAwhCVWbhUa7WQ/KFuNGRJPT2mUmXbBfrd/nu/Eqwrv015WmrYuqjs1Np/ZEar77yQyBLTMkx5VoELreTEL4fA==)
         # auto-commit: false
         # connection-test-query: SELECT 1
         # transaction-isolation: TRANSACTION_READ_UNCOMMITTED
@@ -94,7 +98,7 @@ application:
     LOG_SCRIPT: backup_log.sh    
     SCHEMA_SCRIPT: backup_schema.sh
     # cron scheduler
-    SCHEDULE_TIME: "0 0 1 * * *"
+    SCHEDULE_TIME: "0 0 2 * * *"
 
 ---
 # dev

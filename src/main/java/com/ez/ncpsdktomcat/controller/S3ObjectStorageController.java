@@ -18,13 +18,15 @@ import com.ez.ncpsdktomcat.service.ObjectStorageS3;
 public class S3ObjectStorageController {
 	
 	@Autowired
-	ObjectStorageProps objectStorageProps;
+	private ObjectStorageProps objectStorageProps;
 	
 	private ObjectStorageS3 objectStorageS3;
 	
 	
 	@GetMapping("/list/bucket" )
 	public String getBucketList() {
+		objectStorageS3 = new ObjectStorageS3(objectStorageProps);
+		
 		objectStorageS3 = new ObjectStorageS3(objectStorageProps);
 		List<Bucket> buckets = objectStorageS3.getBucketList();
 		

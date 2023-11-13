@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ez.ncpsdktomcat.common.FileEncrypterDecrypter;
-import com.ez.ncpsdktomcat.common.GzipComponent;
+import com.ez.ncpsdktomcat.deprecated.FileEncrypterDecrypter;
+import com.ez.ncpsdktomcat.deprecated.GzipComponent;
 import com.ez.ncpsdktomcat.service.BackupComponent;
 import com.ez.ncpsdktomcat.service.DBService;
 import com.ez.ncpsdktomcat.vo.LogMaterialVO;

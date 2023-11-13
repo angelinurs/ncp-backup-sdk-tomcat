@@ -33,6 +33,8 @@ public class ObjectStorageProps {
     private String ENDPOINT_SOUTH;
     private String ACCESS_KEY;
     private String SECRET_KEY;
-    private String TEST_KEY;
+    
+    private String AWS_PATH;
+    private String SYNC_BUCKET_COMMAND;
 
 }

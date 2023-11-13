@@ -1,4 +1,4 @@
-package com.ez.ncpsdktomcat.common;
+package com.ez.ncpsdktomcat.deprecated;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -7,6 +7,8 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import org.springframework.stereotype.Component;
+
+import com.ez.ncpsdktomcat.common.ErrorLogMessage;
 
 import lombok.extern.slf4j.Slf4j;
 

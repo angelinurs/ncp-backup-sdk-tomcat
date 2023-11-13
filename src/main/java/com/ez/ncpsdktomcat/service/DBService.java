@@ -6,6 +6,17 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.ez.ncpsdktomcat.vo.TenencySchemaVO;
 
+/**
+ * @author kyoung il pak
+ * @version 0.9.0
+ * @since 2023.11.12.mon
+ * 
+ * @apiNote
+ * 
+ * * method list <br />
+ * {@link #getSchemaList() <br />
+ * 
+ */
 public class DBService {
 		
 	private JdbcTemplate jdbcTemplate;
@@ -13,7 +24,12 @@ public class DBService {
 	public DBService( JdbcTemplate jdbcTemplate ) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
-	
+
+	/**
+	 * @author kyoung il pak
+	 * @implNote get schemeVO list for backup
+	 * @return get schemeVO list
+	 */
 	public List<TenencySchemaVO> getSchemaList() {
 		
 	    List<TenencySchemaVO> results = null;

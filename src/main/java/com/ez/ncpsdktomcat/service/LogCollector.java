@@ -1,6 +1,5 @@
 package com.ez.ncpsdktomcat.service;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +12,7 @@ import com.ez.ncpsdktomcat.common.ErrorLogMessage;
 import com.ez.ncpsdktomcat.common.FileUtils;
 
 import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author kyoung il pak
  * @version 0.9.0
@@ -21,12 +21,8 @@ import lombok.extern.slf4j.Slf4j;
  * @apiNote
  * 
  * * method list <br />
- * {@link https://forums.oracle.com/ords/apexds/post/combining-zip-and-cipher-streams-zipoutputstream-and-cipher-1664 <br />
- * {@link #getEnvs(String) <br />
- * {@link #getCommand(String, String) <br />
- * <br />
- * {@link #RunScript(String[], String[], File, String) <br />
- * {@link #doDump(String, String, String, String, String) <br />
+ * 
+ * {@link #getLogs(String, String) <br />
  * 
  * @see LogCollector#getLogs(String) 
  * 
@@ -34,7 +30,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 public class LogCollector {
-			
+
+	/**
+	 * @author kyoung il pak
+	 * @implNote get log file path array
+	 * @return log file path array
+	 */
 	public String[] getLogs( String logPath, String extension ) {
 
 		log.info( "=== Start File List ===" );

@@ -7,6 +7,17 @@ import com.ez.ncpsdktomcat.common.ErrorLogMessage;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * @author kyoung il pak
+ * @version 0.9.0
+ * @since 2023.11.12.mon
+ * 
+ * @apiNote
+ * 
+ * * method list <br />
+ * {@link #getKey(String) <br />
+ * 
+ */
 @Slf4j
 public class KeyBinder {
 	
@@ -16,6 +27,11 @@ public class KeyBinder {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 	
+	/**
+	 * @author kyoung il pak
+	 * @implNote get encrypt key as scheme
+	 * @return get key
+	 */
 	public String getKey( String schemaName ) {
 		
 		StringBuilder sb = new StringBuilder();
