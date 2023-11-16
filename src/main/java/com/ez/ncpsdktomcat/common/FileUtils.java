@@ -10,6 +10,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import com.ez.ncpsdktomcat.vo.TenencySchemaVO;
 
@@ -79,5 +80,12 @@ public class FileUtils {
 	        }
 	    });
 	    return fileList;
+	}	
+
+	static public String[] concatenate(String[] first, String[] second)
+	{
+	    return Stream.of(first, second)
+	                    .flatMap(Stream::of)        // 또는 `Arrays::stream`을 사용합니다.
+	                    .toArray(String[]::new);
 	}
 }

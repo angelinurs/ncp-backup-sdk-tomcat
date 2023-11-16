@@ -1,5 +1,8 @@
 package com.ez.ncpsdktomcat.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.ez.ncpsdktomcat.config.ObjectStorageProps;
 
 /**
@@ -41,6 +44,19 @@ public class AwsClientService {
 		
 		return awsPath + " " + options;
 		
+	}
+	
+	public List<String> getAccessKeyEnvs() {
+		List<String> envs = new ArrayList<>();
+
+		
+		String access_key = objectStorageProps.getACCESS_KEY();
+		String secret_key = objectStorageProps.getSECRET_KEY(); 
+		
+		envs.add( String.format( "AWS_ACCESS_KEY_ID=%s", access_key ) );
+		envs.add( String.format( "AWS_SECRET_ACCESS_KEY=%s", secret_key ) );
+		
+		return envs;
 	}
 
 }

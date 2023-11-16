@@ -125,10 +125,33 @@ public class BackupComponent {
 
 		// inquiry list of logs
 		String[] logs = null;	
+		String[] appLogs = null;	
+		String[] dbLogs = null;	
 //		logs = logCollector.getLogs( "/home/naru/temp/log_test", "text.log" );
 		
-		String logPath = "/app/logs";
-		logs = logCollector.getLogs( logPath, ".log" );
+		String appLogPath = "/app/logs";
+		String dbLogPath = "/var/lib/postgresql/logs";
+		
+		appLogs = logCollector.getLogs( appLogPath, ".log" );
+		dbLogs = logCollector.getLogs( dbLogPath, ".log" );
+		
+//		if( appLogs != null && dbLogs == null ) {
+//			logs = appLogs;
+//		} else if( appLogs == null && dbLogs != null ) {
+//			logs = dbLogs;
+//		} else if( appLogs != null && dbLogs != null ) {
+//			logs = FileUtils.concatenate(appLogs, dbLogs);
+//		}
+		
+		logs = ( appLogs != null && dbLogs == null )? appLogs :
+			   ( appLogs == null && dbLogs != null )? dbLogs :
+			   ( appLogs != null && dbLogs != null )? FileUtils.concatenate(appLogs, dbLogs):
+				                                      null;
+				   
+		
+		if( logs == null || logs.length == 0 ) {
+			return null;
+		}
 		
 		List<LogMaterialVO> logMaterialVOs = new ArrayList<>();
 		
@@ -306,13 +329,19 @@ public class BackupComponent {
 		awsClientService = new AwsClientService(objectStorageProps);
 		
 		String command = awsClientService.getCommand( bucketName, bucketNameWorm );
+		List<String> envs = awsClientService.getAccessKeyEnvs();
 		
-		scriptComponent.RunScript(null, command.split( " " ), null, bucketNameWorm );
+		scriptComponent.RunScript( envs.toArray( new String[ envs.size() ]), 
+				command.split( " " ), 
+				null, 
+				bucketNameWorm 
+				);
 		
 		log.info( "=============================================" );
 		log.info( "=== command [ {}  ] !! ===", command );
 		log.info( "=============================================" );
 		
 	}
+	
 	
 }
