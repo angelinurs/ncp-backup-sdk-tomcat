@@ -26,9 +26,6 @@ public class BackupComponent {
 	private ScriptComponent scriptComponent;
 	
 	@Autowired
-	private LogCollector logCollector;
-	
-	@Autowired
 	@Qualifier( value = "userJdbcTemplate" )
 	private JdbcTemplate userJdbcTemplate;
 	
@@ -93,6 +90,9 @@ public class BackupComponent {
 			keyBinder = new KeyBinder( portalJdbcTemplate );
 			String key = keyBinder.getKey( vo.getProfile() );
 			
+			
+			log.info( "key binder test : {}", String.format("vo.getProfile() : %s \nkey : %s", vo.getProfile(), key));
+			
 			vo.setKey(key);
 			
 			String command = scriptComponent.doDumpSchemas( vo, kind );
@@ -132,8 +132,8 @@ public class BackupComponent {
 		String appLogPath = "/app/logs";
 		String dbLogPath = "/var/lib/postgresql/logs";
 		
-		appLogs = logCollector.getLogs( appLogPath, ".log" );
-		dbLogs = logCollector.getLogs( dbLogPath, ".log" );
+		appLogs = LogCollector.getLogs( appLogPath, ".log" );
+		dbLogs = LogCollector.getLogs( dbLogPath, ".log" );
 		
 //		if( appLogs != null && dbLogs == null ) {
 //			logs = appLogs;

@@ -71,6 +71,7 @@ spring:
         # multi-rows insert option
         data-source-properties: 
           reWriteBatchedInserts: true
+ 
 #logging:
 ##  config:
 #  level:
@@ -92,8 +93,9 @@ springdoc:
 
 application:
   etc:
-    DIR_PATH: /home/naru/temp/temp
-    LOG_PATH: /backend-sys/backup-scheduler
+    DIR_PATH: /home/naru/temp
+#    LOG_PATH: /backend-sys/backup-scheduler
+    LOG_PATH: /home/naru/temp/temp/log
     # script naems
     LOG_SCRIPT: backup_log.sh    
     SCHEMA_SCRIPT: backup_schema.sh

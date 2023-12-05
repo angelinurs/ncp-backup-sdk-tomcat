@@ -30,13 +30,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 public class LogCollector {
+	
+//	private LogCollector( ) {
+//		throw new IllegalStateException("Error Log - e - Message");
+//	}
 
 	/**
 	 * @author kyoung il pak
 	 * @implNote get log file path array
 	 * @return log file path array
 	 */
-	public String[] getLogs( String logPath, String extension ) {
+	public static String[] getLogs( String logPath, String extension ) {
 
 		log.info( "=== Start File List ===" );
 		log.info( "= + log Path : {} ", logPath );

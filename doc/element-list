@@ -1,0 +1,8 @@
+com.ez.ncpsdktomcat
+com.ez.ncpsdktomcat.common
+com.ez.ncpsdktomcat.config
+com.ez.ncpsdktomcat.controller
+com.ez.ncpsdktomcat.deprecated
+com.ez.ncpsdktomcat.scheduler
+com.ez.ncpsdktomcat.service
+com.ez.ncpsdktomcat.vo

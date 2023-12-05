@@ -17,10 +17,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ez.ncpsdktomcat.config.ObjectStorageProps;
 import com.ez.ncpsdktomcat.deprecated.FileEncrypterDecrypter;
 import com.ez.ncpsdktomcat.deprecated.GzipComponent;
 import com.ez.ncpsdktomcat.service.BackupComponent;
 import com.ez.ncpsdktomcat.service.DBService;
+import com.ez.ncpsdktomcat.service.KeyBinder;
+import com.ez.ncpsdktomcat.service.ScriptComponent;
 import com.ez.ncpsdktomcat.vo.LogMaterialVO;
 import com.ez.ncpsdktomcat.vo.TenencySchemaVO;
 
@@ -33,7 +36,7 @@ public class DBController {
 		
 	@Autowired
 	@Qualifier( value = "userJdbcTemplate" )
-	private JdbcTemplate jdbcTemplate;
+	private JdbcTemplate userJdbcTemplate;
 	
 	private DBService dbService;
 	
@@ -44,11 +47,21 @@ public class DBController {
 	
 	@Autowired
 	private GzipComponent gzipComponent;
+		
+	@Autowired
+	@Qualifier( value = "portalJdbcTemplate")
+	private JdbcTemplate portalJdbcTemplate;
+	
+	// encrypt key
+	private KeyBinder keyBinder;
+
+	@Autowired
+	private ScriptComponent scriptComponent;
 	
 	@GetMapping("/list2")
 	public String getSchemaList2() {
 		
-		dbService = new DBService( jdbcTemplate );
+		dbService = new DBService( userJdbcTemplate );
 		
 		List<TenencySchemaVO> results =  dbService.getSchemaList();
 		
@@ -149,6 +162,48 @@ public class DBController {
 	      .append( "same ? " ).append( originalContent.equals( decryptedContent ) ? "same": "not same" ).append( "\n" );
 	    
 	    return sb.toString();
+	}
+	
+	@GetMapping("/profile")
+	public void getProfileName() {
+		JdbcTemplate jdbcTemplate = null;
+		
+		String kind = "user";
+		
+		switch( kind ) {
+		case "user":
+			jdbcTemplate = userJdbcTemplate;			
+			break;
+			
+		case "portal":
+			jdbcTemplate = portalJdbcTemplate;			
+			break;
+		}
+		
+//		if( jdbcTemplate == null ) {
+//			return null;
+//		}
+		
+		// inquiry list of schema
+		List<TenencySchemaVO> results = ( new DBService( jdbcTemplate )).getSchemaList();
+		
+		log.info("============ Start Backup ================");
+		
+		// dump, compress, encrypt all schema 
+		for( TenencySchemaVO vo : results ) {
+			keyBinder = new KeyBinder( portalJdbcTemplate );
+			String key = keyBinder.getKey( vo.getProfile() );
+			
+			log.info( "key binder test : {}", String.format("vo.getProfile() : %s \nkey : %s", vo.getProfile(), key));
+			log.info( "key binder to_string : {}", vo.toString() );
+			
+			vo.setKey(key);
+			
+			String command = scriptComponent.doDumpSchemas( vo, kind );
+			
+			log.info( "Command : {}", command );
+		}
+		
 	}
 	
 }

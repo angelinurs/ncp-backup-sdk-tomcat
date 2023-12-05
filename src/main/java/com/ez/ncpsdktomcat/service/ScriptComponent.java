@@ -114,29 +114,46 @@ public class ScriptComponent implements EnvironmentAware {
 		
 		List<String> envs = new ArrayList<>();
 		
+		String pwd = ""; 
+		String host = ""; 
+		String port = ""; 
+		String dbname = "";
+		String user = "";
+		
+		String data = "";
+		
 		switch( kind ) {
 		case "portal" : 
 			// process.runtime.exec param portal envArray
-			envs.add( String.format( "PGPASSWORD=%s", this.getPortalPassword() ) );
-			envs.add( String.format( "PGHOST=%s", this.getPortalHost() ) );
-			envs.add( String.format( "PGPORT=%s", this.getPortalPort() ) );
-			envs.add( String.format( "PGDATABASE=%s", this.getPortalDbname() ) );
-			envs.add( String.format( "PGUSER=%s", this.getPortalUser() ) );
-//			envs.add( String.format( "SCHEMA=%s", "psm_sc_svc171" ) );
+			pwd = this.getPortalPassword();
+			host = this.getPortalHost();
+			port = this.getPortalPort();
+			dbname =  this.getPortalDbname();
+			user = this.getPortalUser();
 			break;
 		case "user" : 
 			// process.runtime.exec param user envArray
-			envs.add( String.format( "PGPASSWORD=%s", this.getUserPassword() ) );
-			envs.add( String.format( "PGHOST=%s", this.getUserHost() ) );
-			envs.add( String.format( "PGPORT=%s", this.getUserPort() ) );
-			envs.add( String.format( "PGDATABASE=%s", this.getUserDbname() ) );
-			envs.add( String.format( "PGUSER=%s", this.getUserUser() ) );
-//			envs.add( String.format( "SCHEMA=%s", "psm_sc_svc171" ) );
+			pwd = this.getUserPassword();
+			host = this.getUserHost();
+			port = this.getUserPort();
+			dbname =  this.getUserDbname();
+			user = this.getUserUser();
 			break;
 		}
+
+		// process.runtime.exec param portal envArray
+		envs.add( String.format( "PGPASSWORD=%s", pwd ) );
+		envs.add( String.format( "PGHOST=%s", host ) );
+		envs.add( String.format( "PGPORT=%s", port ) );
+		envs.add( String.format( "PGDATABASE=%s", dbname ) );
+		envs.add( String.format( "PGUSER=%s", user ) );
+		
+		data = String.format( "host=%s port=%s dbname=%s user=%s password=%s", host, port, dbname, user, pwd );
+
+		envs.add( String.format( "DATA=%s", data ) );
 		
 		envs.add( String.format( "FILE_NAME=%s", vo.getAbsolutePath() ) );
-		envs.add( String.format( "SCHEMA=%s", vo.getSchema() ) );
+		envs.add( String.format( "SCHEMA=%s", vo.getSchema().replace( "-", "_" ) ) );
 		envs.add( String.format( "KEY=%s", vo.getKey() ) );
 		
 		return envs;

@@ -13,9 +13,6 @@ import com.ez.ncpsdktomcat.service.LogCollector;
 public class LogTestCon {
 	
 	@Autowired
-	private LogCollector logCollector;
-	
-	@Autowired
 	private GzipComponent gzipComponent;
 	
 	// 1. get log list
@@ -25,13 +22,13 @@ public class LogTestCon {
 	@GetMapping( "/list" )
 	public String[] getLogList() {
 		
-		return logCollector.getLogs( "/ez-sys", ".log" );
+		return LogCollector.getLogs( "/ez-sys", ".log" );
 	}
 	
 	@GetMapping( "/compress" )
 	public void toCompress() {
 		String[] logs = null;
-		logs = logCollector.getLogs( "/ez-sys", ".log" );
+		logs = LogCollector.getLogs( "/ez-sys", ".log" );
 		
 		if( logs != null ) {
 			for( String log : logs ) {
