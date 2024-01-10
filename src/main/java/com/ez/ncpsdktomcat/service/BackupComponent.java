@@ -149,11 +149,12 @@ public class BackupComponent {
 				                                      null;
 				   
 		
+		List<LogMaterialVO> logMaterialVOs = new ArrayList<>();
+		
 		if( logs == null || logs.length == 0 ) {
-			return null;
+			return logMaterialVOs;
 		}
 		
-		List<LogMaterialVO> logMaterialVOs = new ArrayList<>();
 		
 		log.info("============ Start Backup ================");
 		
@@ -300,6 +301,25 @@ public class BackupComponent {
 				}
 			} 
 			
+		}
+	}
+	
+	// { ez-sys application logs, ncloud-application ( ativity-tracer,log-analystics ) logs }
+	// sync bucket
+	public void syncToObjectStoragesWormBucket( List<String> targetBucketname ) {
+		
+		objectStorageS3 = new ObjectStorageS3(objectStorageProps);
+		
+		for( String bucketname : targetBucketname ) {
+			
+			if(isWormBucketList( bucketname + "-worm" ) ) {
+				
+				// syncBucket
+				syncBuckets( bucketname );
+			} else {
+				log.info( "There is no {} bucket", bucketname );
+				log.info( "Before create {} bucket, if you wanna sync.", bucketname );
+			}
 		}
 	}
 

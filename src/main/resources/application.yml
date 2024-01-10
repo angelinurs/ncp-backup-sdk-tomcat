@@ -20,6 +20,11 @@ application:
     # aws client v2
     AWS_PATH: /usr/local/bin/aws
     SYNC_BUCKET_COMMAND: "--endpoint-url=<objecturl> s3 sync s3://<source> s3://<destination>"
+    
+    # ez-sys, ncloud-log-analystic bucket names @ south resion 
+    ADDITIONAL_BUCKETS: >
+      cloud-log-analystic-kubernetes-server,
+      ez-sys
 
 jasypt:
   encryptor:
@@ -31,19 +36,58 @@ spring:
 #    name: ${APP_NAME}
     name: backup-manager
   profiles:
-    active: prod
+    active: local
   # datasource
+#  portal:
+#    datasource:
+#      hikari:
+#        driver-class-name: ENC(sA7TFX4KYqOtvBfHmv5Yx/vRRVR2X878F+ddY1GZQ5ymjQj+kDHRkSEzMEE7WDmXtpW0JgV0/z2uYIzWug7gWg==)        
+#        jdbc-url: ENC(4HrLGQaDfodOeavT8p1lDLUbiL24qTcYXsjIAOFCtoqGhanN2WDKU5tqYHvQRxZ5eLUE9deAnLK2/38yd0CKQ8Hltr0gf/cMHGAEAUkpNTonhUmBEchd0DZB8zwNCLmtaxg8xvDIFTI3OKopiVFm1Q==)
+#        username: ENC(eUUU1ouTDKqclt+7ztK36ir+tOesZW+F4PXo4eCKifo6pfkoLVphwSAA4iYGnkOi)
+#        password: ENC(uzVLoZHjaqSJ1e95SM9ksDCR4HI5Hy0Q8xJP+jv9HOHwHhWWBdy/bkybdYaUJxzj)
+#        pool-name: ENC(k8zexv6I8EIh9fcd/l/51lXj7YphueUaLcbfyz15cuRwgFZDVnEDANXI6YVrpn7O2IakT2k2PQglBAOX8QzCqA==)
+#        # auto-commit: false
+#        # connection-test-query: SELECT 1
+#        # transaction-isolation: TRANSACTION_READ_UNCOMMITTED
+#        connection-timeout: 3000
+#        validation-timeout: 3000
+#        minimum-idle: 1
+#        max-lifetime: 15000
+#        maximum-pool-size: 10        
+#        # multi-rows insert option
+#        data-source-properties: 
+#          reWriteBatchedInserts: true
+#  user:
+#    datasource:
+#      hikari:
+#        driver-class-name: ENC(sA7TFX4KYqOtvBfHmv5Yx/vRRVR2X878F+ddY1GZQ5ymjQj+kDHRkSEzMEE7WDmXtpW0JgV0/z2uYIzWug7gWg==)        
+#        jdbc-url: ENC(KI7TMeDtzn5dNv9J1wpitGQzALc7TE2b/xQ6kqg+bGkWUdxCBcNXKWwqymCRxn8TmZJsdwXsTYflkRB5z2P61sbdnCA5+Nt9RYtfbRCq6PPEphWESRdUiKP5B2Zr//2S)
+#        username: ENC(G/7jX+WXSU8rnQ9FOS/qgxJpZIgYsDGuMk+4XA18p/EDB7hkpkT4jYxQMJzg/mgL)
+#        password: ENC(gi5aiEATevLePrqRgLNbZUZEvUtKOHpeIP2YB13V2UbzHt+ZYkq6Hz9Ta6QptxKv)
+#        pool-name: ENC(yAwhCVWbhUa7WQ/KFuNGRJPT2mUmXbBfrd/nu/Eqwrv015WmrYuqjs1Np/ZEar77yQyBLTMkx5VoELreTEL4fA==)
+#        # auto-commit: false
+#        # connection-test-query: SELECT 1
+#        # transaction-isolation: TRANSACTION_READ_UNCOMMITTED
+#        connection-timeout: 3000
+#        validation-timeout: 3000
+#        minimum-idle: 1
+#        max-lifetime: 15000
+#        maximum-pool-size: 10
+#        # multi-rows insert option
+#        data-source-properties: 
+#          reWriteBatchedInserts: true
   portal:
     datasource:
       hikari:
-        driver-class-name: ENC(sA7TFX4KYqOtvBfHmv5Yx/vRRVR2X878F+ddY1GZQ5ymjQj+kDHRkSEzMEE7WDmXtpW0JgV0/z2uYIzWug7gWg==)        
-        jdbc-url: ENC(4HrLGQaDfodOeavT8p1lDLUbiL24qTcYXsjIAOFCtoqGhanN2WDKU5tqYHvQRxZ5eLUE9deAnLK2/38yd0CKQ8Hltr0gf/cMHGAEAUkpNTonhUmBEchd0DZB8zwNCLmtaxg8xvDIFTI3OKopiVFm1Q==)
-        username: ENC(eUUU1ouTDKqclt+7ztK36ir+tOesZW+F4PXo4eCKifo6pfkoLVphwSAA4iYGnkOi)
-        password: ENC(uzVLoZHjaqSJ1e95SM9ksDCR4HI5Hy0Q8xJP+jv9HOHwHhWWBdy/bkybdYaUJxzj)
-        pool-name: ENC(k8zexv6I8EIh9fcd/l/51lXj7YphueUaLcbfyz15cuRwgFZDVnEDANXI6YVrpn7O2IakT2k2PQglBAOX8QzCqA==)
+        driver-class-name: org.postgresql.Driver        
+#        jdbc-url: jdbc:postgresql://pg-1f3ar.vpc-cdb-kr.gov-ntruss.com:5432/psm_ez?charSet=ko_KR.UTF8
+        jdbc-url: jdbc:postgresql://ez-sys-postgres-db-svc-962ee-1989515-8379b0324956.kr-gov.lb.naverncp.com:5432/psm_ez?charSet=ko_KR.UTF8
+        username: psm_ez
+        password: dlwltjxl1!
         # auto-commit: false
         # connection-test-query: SELECT 1
         # transaction-isolation: TRANSACTION_READ_UNCOMMITTED
+        pool-name: naru-tenency-generator
         connection-timeout: 3000
         validation-timeout: 3000
         minimum-idle: 1
@@ -55,14 +99,15 @@ spring:
   user:
     datasource:
       hikari:
-        driver-class-name: ENC(sA7TFX4KYqOtvBfHmv5Yx/vRRVR2X878F+ddY1GZQ5ymjQj+kDHRkSEzMEE7WDmXtpW0JgV0/z2uYIzWug7gWg==)        
-        jdbc-url: ENC(KI7TMeDtzn5dNv9J1wpitGQzALc7TE2b/xQ6kqg+bGkWUdxCBcNXKWwqymCRxn8TmZJsdwXsTYflkRB5z2P61sbdnCA5+Nt9RYtfbRCq6PPEphWESRdUiKP5B2Zr//2S)
-        username: ENC(G/7jX+WXSU8rnQ9FOS/qgxJpZIgYsDGuMk+4XA18p/EDB7hkpkT4jYxQMJzg/mgL)
-        password: ENC(gi5aiEATevLePrqRgLNbZUZEvUtKOHpeIP2YB13V2UbzHt+ZYkq6Hz9Ta6QptxKv)
-        pool-name: ENC(yAwhCVWbhUa7WQ/KFuNGRJPT2mUmXbBfrd/nu/Eqwrv015WmrYuqjs1Np/ZEar77yQyBLTMkx5VoELreTEL4fA==)
+        driver-class-name: org.postgresql.Driver        
+#        jdbc-url: jdbc:postgresql://ez-sys-postgres-db-svc-962ee-1989515-8379b0324956.kr-gov.lb.naverncp.com:5432/psm_1?charSet=ko_KR.UTF8
+        jdbc-url: jdbc:postgresql://ez-sys-postgres-db-svc-962ee-1989515-8379b0324956.kr-gov.lb.naverncp.com:5432/psm_1?charSet=ko_KR.UTF8
+        username: psm_user
+        password: dlwltjxl2@
         # auto-commit: false
         # connection-test-query: SELECT 1
         # transaction-isolation: TRANSACTION_READ_UNCOMMITTED
+        pool-name: naru-tenency-generator
         connection-timeout: 3000
         validation-timeout: 3000
         minimum-idle: 1
@@ -71,7 +116,6 @@ spring:
         # multi-rows insert option
         data-source-properties: 
           reWriteBatchedInserts: true
- 
 #logging:
 ##  config:
 #  level:

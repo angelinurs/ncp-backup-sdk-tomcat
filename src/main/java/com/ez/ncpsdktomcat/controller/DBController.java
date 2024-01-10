@@ -144,17 +144,9 @@ public class DBController {
 			
 //			new File("baz.enc").delete(); // cleanup
 			
-		} catch (NoSuchAlgorithmException e) {
+		} catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IOException | InvalidAlgorithmParameterException e) {
 			e.printStackTrace();
-		} catch (NoSuchPaddingException e) {
-			e.printStackTrace();
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InvalidAlgorithmParameterException e) {
-			e.printStackTrace();
-		} 
+		}     
 	    
 	    StringBuilder sb = new StringBuilder();
 	    sb.append( "originalContent : "  ).append( originalContent ).append( "\n" )
@@ -191,17 +183,20 @@ public class DBController {
 		
 		// dump, compress, encrypt all schema 
 		for( TenencySchemaVO vo : results ) {
-			keyBinder = new KeyBinder( portalJdbcTemplate );
-			String key = keyBinder.getKey( vo.getProfile() );
-			
-			log.info( "key binder test : {}", String.format("vo.getProfile() : %s \nkey : %s", vo.getProfile(), key));
-			log.info( "key binder to_string : {}", vo.toString() );
-			
-			vo.setKey(key);
-			
-			String command = scriptComponent.doDumpSchemas( vo, kind );
-			
-			log.info( "Command : {}", command );
+			if( vo.getProfile().equalsIgnoreCase("svc215") ) {
+				keyBinder = new KeyBinder( portalJdbcTemplate );
+				String key = keyBinder.getKey( vo.getProfile() );
+				
+				log.info( "key binder test : {}", String.format("vo.getProfile() : %s %nkey : %s", vo.getProfile(), key));
+				log.info( "key binder to_string : {}", vo.toString() );
+				
+				vo.setKey(key);
+				
+				String command = scriptComponent.doDumpSchemas( vo, kind );
+				
+				log.info( "Command : {}", command );
+				
+			}
 		}
 		
 	}

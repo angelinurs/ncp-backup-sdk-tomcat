@@ -1,6 +1,7 @@
 package com.ez.ncpsdktomcat.config;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -36,5 +37,7 @@ public class ObjectStorageProps {
     
     private String AWS_PATH;
     private String SYNC_BUCKET_COMMAND;
+    
+    private List<String> ADDITIONAL_BUCKETS;
 
 }

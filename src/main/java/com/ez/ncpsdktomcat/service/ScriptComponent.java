@@ -142,11 +142,11 @@ public class ScriptComponent implements EnvironmentAware {
 		}
 
 		// process.runtime.exec param portal envArray
-		envs.add( String.format( "PGPASSWORD=%s", pwd ) );
-		envs.add( String.format( "PGHOST=%s", host ) );
-		envs.add( String.format( "PGPORT=%s", port ) );
-		envs.add( String.format( "PGDATABASE=%s", dbname ) );
-		envs.add( String.format( "PGUSER=%s", user ) );
+//		envs.add( String.format( "PGPASSWORD=%s", pwd ) );
+//		envs.add( String.format( "PGHOST=%s", host ) );
+//		envs.add( String.format( "PGPORT=%s", port ) );
+//		envs.add( String.format( "PGDATABASE=%s", dbname ) );
+//		envs.add( String.format( "PGUSER=%s", user ) );
 		
 		data = String.format( "host=%s port=%s dbname=%s user=%s password=%s", host, port, dbname, user, pwd );
 

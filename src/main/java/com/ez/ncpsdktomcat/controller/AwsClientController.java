@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ez.ncpsdktomcat.config.ObjectStorageProps;
 import com.ez.ncpsdktomcat.service.BackupComponent;
 import com.ez.ncpsdktomcat.vo.LogMaterialVO;
 import com.ez.ncpsdktomcat.vo.TenencySchemaVO;
@@ -19,6 +20,10 @@ import lombok.extern.slf4j.Slf4j;
 public class AwsClientController {
 	@Autowired
 	private BackupComponent backupComponent;
+
+	
+	@Autowired
+	private ObjectStorageProps objectStorageProps;
 	
 	@GetMapping("/sync")
 	public String doTask() {
@@ -30,6 +35,16 @@ public class AwsClientController {
 		log.info(job_of_dumpall_logs);
 		
 		return String.format("job_of_dumpall_schema : %s <br /> job_of_dumpall_logs : %s <br />", job_of_dumpall_schema, job_of_dumpall_logs );
+	}
+	
+	@GetMapping("/sync/additional")
+	public String doSyncAdditional() {
+		
+		String job_of_syncAdditionalBuckets = syncAdditionalBuckets();
+		
+		log.info(job_of_syncAdditionalBuckets);
+		
+		return String.format("job_of_syncAll_additionalBuckets : %s <br />", job_of_syncAdditionalBuckets );
 	}
 
 	public String dumpall_schema() {
@@ -56,6 +71,26 @@ public class AwsClientController {
 		}
 		
 		return "backup logs is done.";
+	}
+	
+	public String syncAdditionalBuckets() {
+		
+		List<String> additionalBuckets = objectStorageProps.getADDITIONAL_BUCKETS();
+		
+		String rtnMessage = "";
+		
+		if( additionalBuckets.isEmpty() ) {
+			
+			rtnMessage = "Additional Bucket is empty.";
+			
+		} else {
+			
+			backupComponent.syncToObjectStoragesWormBucket(additionalBuckets);
+			
+			rtnMessage = "Synchronization of additional buckets completed.";			
+		}
+		
+		return rtnMessage;
 	}
 
 }

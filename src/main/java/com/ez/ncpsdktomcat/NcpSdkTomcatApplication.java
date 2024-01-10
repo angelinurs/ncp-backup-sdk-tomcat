@@ -11,5 +11,4 @@ public class NcpSdkTomcatApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(NcpSdkTomcatApplication.class, args);
 	}
-
 }
